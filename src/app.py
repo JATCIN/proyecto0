@@ -138,7 +138,7 @@ def list_banco():
 
 @app.route('/edit_banco/<int:record_id>')
 def edit_record(record_id):
-    # Lógica para editar el registro
+ 
     return f'Edit record {record_id}'
 
 @app.route('/delete_banco/<int:record_id>')
