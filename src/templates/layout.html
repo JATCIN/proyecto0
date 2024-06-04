@@ -1,8 +1,8 @@
-//templates/layout.html
 <!DOCTYPE html>
 <html>
  <head>
   <meta charset="utf-8">
+  
   <title>{% block title %}{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
@@ -84,6 +84,17 @@
             <li><a href="#">Listar clientes </a></li>
         </ul>
               </li>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('list_banco') }}">
+                  <i class="fa fa-university"></i>
+                  Banks
+              </a>
+              <ul class="submenu">
+                  <li><a href="{{ url_for('new_banco') }}">Nuevo banco</a></li>
+              </ul>
+
+          </li>
             </ul>
    </div>
         </nav>

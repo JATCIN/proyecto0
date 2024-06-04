@@ -1,0 +1,193 @@
+{% extends 'layout.html' %}
+
+{% block title %}NewBanco{% endblock %}
+
+{% block content %}
+<style>
+  .form-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 5px;
+  }
+  .input-group-addon {
+    width: 40px;
+    text-align: center;
+  }
+  .main-login {
+    width: 100%;
+  }
+  .main-center {
+    background-color: #4b4b4b;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(185, 13, 13, 0.1);
+  }
+  .form-title {
+    text-align: center;
+  }
+  .is-invalid {
+    border-color: #dc3545;
+  }
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875em;
+  }
+</style>
+
+<div class="container form-container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 main-login main-center">
+      <h5 class="form-title">Payment Information</h5>
+      
+      <!-- Mensajes Flash -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="alert-container">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      
+      <form id="paymentForm" autocomplete="off">
+        <div class="form-group">
+          <label for="forma_liquidacion" class="cols-sm-2 control-label">Forma Liquidación</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-money-check-alt" aria-hidden="true"></i></span>
+              <select class="form-control" name="forma_liquidacion" id="forma_liquidacion">
+                <option value="">Seleccione una opción</option>
+                <option value="extranjero">BANCO EN EL EXTRANJERO</option>
+                <option value="local">BANCO LOCAL</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="cuenta_beneficiario" class="cols-sm-2 control-label">Cuenta Beneficiario</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-university" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="cuenta_beneficiario" id="cuenta_beneficiario" placeholder="Cuenta Beneficiario"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="beneficiario" class="cols-sm-2 control-label">Beneficiario</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user-check" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="beneficiario" id="beneficiario" placeholder="Beneficiario"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="plaza_beneficiario" class="cols-sm-2 control-label">Plaza Beneficiario</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-city" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="plaza_beneficiario" id="plaza_beneficiario" placeholder="Plaza Beneficiario"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="pais_beneficiario" class="cols-sm-2 control-label">País Beneficiario</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-flag" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="pais_beneficiario" id="pais_beneficiario" placeholder="País Beneficiario"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="banco" class="cols-sm-2 control-label">Banco</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-university" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="banco" id="banco" placeholder="Banco"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="aba" class="cols-sm-2 control-label">ABA</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-barcode" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="aba" id="aba" placeholder="ABA"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ordenante" class="cols-sm-2 control-label">Ordenante</label>
+          <div class="cols-sm-10">
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-user-tie" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="ordenante" id="ordenante" placeholder="Ordenante"/>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Submit Payment Info" class="form-control btn btn-primary">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('paymentForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let valid = true;
+    let formElements = this.elements;
+    let errorMessage = '';
+
+    for (let element of formElements) {
+        if (element.type !== 'submit' && element.value === '') {
+            valid = false;
+            errorMessage = 'Por favor, complete todos los campos.';
+            element.classList.add('is-invalid');
+
+            let icon = document.createElement('span');
+            icon.classList.add('invalid-feedback');
+            icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+
+            element.parentNode.insertBefore(icon, element.nextSibling);
+        } else {
+            let icon = element.nextElementSibling;
+            if (icon && icon.classList.contains('invalid-feedback')) {
+                icon.parentNode.removeChild(icon);
+            }
+            element.classList.remove('is-invalid');
+        }
+    }
+
+    if (!valid) {
+        alert(errorMessage);
+    } else {
+        let formData = new FormData(this);
+        fetch('{{ url_for("payment") }}', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Registrado exitosamente');
+                window.location.href = '{{ url_for("new_banco") }}';
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+});
+</script>
+{% endblock %}
