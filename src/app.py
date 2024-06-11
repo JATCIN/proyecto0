@@ -2,16 +2,19 @@ from flask import Flask, jsonify, request, session, redirect, url_for, render_te
 import psycopg2
 import psycopg2.extras
 import re
+import os
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = 'cairocoders-ednalan'
+app.secret_key = os.getenv('SECRET_KEY', 'EYg3OS1Q1LDAljkxr8ARdvYZUhdF_kYC')
 
-DB_HOST = "localhost"
-DB_NAME = "proyecto"
-DB_USER = "postgres"
-DB_PASS = "root"
+# Configuración de la base de datos
+DB_HOST = os.getenv('DB_HOST', 'dpg-cpkb0knsc6pc73eq9930-a')
+DB_NAME = os.getenv('DB_NAME', 'proyecto_db_3fqv')
+DB_USER = os.getenv('DB_USER', 'proyecto_user')
+DB_PASS = os.getenv('DB_PASS', '5XcWSgOeGs9bDJk2pEtPOnUwomId0OmR')
 
+# Conexión a la base de datos
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
 
 @app.route('/')
