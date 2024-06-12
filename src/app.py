@@ -152,3 +152,6 @@ def delete_record(record_id):
     cursor.close()
     return redirect(url_for('list_banco'))
 
+if __name__ == "__main__":
+    app.run(debug=True)
+
