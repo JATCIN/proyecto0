@@ -15,7 +15,7 @@ DB_USER = os.getenv('DB_USER', 'proyecto_user')
 DB_PASS = os.getenv('DB_PASS', '5XcWSgOeGs9bDJk2pEtPOnUwomId0OmR')
 
 # Conexión a la base de datos
-conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
+conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST, sslmode='disable')
 
 @app.route('/')
 def home():
