@@ -9,10 +9,10 @@ app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'EYg3OS1Q1LDAljkxr8ARdvYZUhdF_kYC')
 
 # Configuración de la base de datos
-DB_HOST = os.getenv('DB_HOST', 'dpg-cpkb0knsc6pc73eq9930-a')
-DB_NAME = os.getenv('DB_NAME', 'proyecto_db_3fqv')
+DB_HOST = os.getenv('DB_HOST', 'dpg-crk7qkm8ii6s73ej2ep0-a')
+DB_NAME = os.getenv('DB_NAME', 'proyecto_db_c7i9')
 DB_USER = os.getenv('DB_USER', 'proyecto_user')
-DB_PASS = os.getenv('DB_PASS', '5XcWSgOeGs9bDJk2pEtPOnUwomId0OmR')
+DB_PASS = os.getenv('DB_PASS', 'u7UC5KMyyivMpJ8oWmPODt0DABU0h9wm')
 
 # Conexión a la base de datos
 conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST, sslmode='disable')
