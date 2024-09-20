@@ -39,9 +39,9 @@ def login():
                 session['username'] = account['username']
                 return redirect(url_for('home'))
             else:
-                flash('Incorrect username/password')
+                flash('Incorrect username/password', 'error')
         else:
-            flash('Incorrect username/password')
+            flash('Incorrect username/password', 'error')
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
