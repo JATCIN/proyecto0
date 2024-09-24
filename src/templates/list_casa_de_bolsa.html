@@ -32,9 +32,6 @@
         <td>{{ record.fecha_creacion }}</td>
         <td>
             <div class="btn-group" role="group" aria-label="Editar y eliminar">
-                <!--<a href="{{ url_for('edit_casa_de_bolsa', record_id=record.id) }}" class="btn btn-warning btn-sm mr-2">
-                    <i class="fas fa-pencil-alt"></i> 
-                </a>-->
                 <a href="{{ url_for('delete_casa_de_bolsa', record_id=record.id) }}" class="btn btn-danger btn-sm">
                     <i class="fas fa-trash-alt"></i> 
                 </a>
