@@ -159,7 +159,7 @@ document.getElementById('Form').addEventListener('submit', function(event) {
         .then(data => {
             if (data.status === 'success') {
                 alert('Registrado exitosamente');
-                window.location.href = '{{ url_for("new_casa_de_bolsa") }}';
+                window.location.href = '{{ url_for("new_casa_de_bolsav2") }}';
             } else {
                 alert(data.message);
             }
