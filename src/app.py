@@ -203,14 +203,17 @@ def list_casa_de_bolsa():
     records = cursor.fetchall()
     return render_template('list_casa_de_bolsa.html', records=records)
 
-@app.route('/delete_casa_de_bolsa/<int:record_id>')
+@app.route('/delete_casa_de_bolsa/<int:record_id>', methods=['POST'])
 def delete_casa_de_bolsa(record_id):
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM casa_de_bolsa WHERE id = %s', (record_id,))
-    conn.commit()
-    cursor.close()
+    try:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM casa_de_bolsa WHERE id = %s', (record_id,))
+        conn.commit()
+        cursor.close()
+        flash('Casa de Bolsa eliminada correctamente.', 'success')
+    except Exception as e:
+        flash(f'Error al eliminar la Casa de Bolsa: {str(e)}', 'danger')
     return redirect(url_for('list_casa_de_bolsa'))
-
 
 if __name__ == "__main__":
     app.run(debug=True)
