@@ -195,6 +195,21 @@ def new_casa_de_bolsav2():
         except Exception as e:
             cursor.close()
             return jsonify(status='error', message=str(e))
+        
+@app.route('/list_casa_de_bolsa')
+def list_casa_de_bolsa():
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM casa_de_bolsa')
+    records = cursor.fetchall()
+    return render_template('list_casa_de_bolsa.html', records=records)
+
+@app.route('/delete_casa_de_bolsa/<int:record_id>')
+def delete_record(record_id):
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM casa_de_bolsa WHERE id = %s', (record_id,))
+    conn.commit()
+    cursor.close()
+    return redirect(url_for('list_casa_de_bolsa'))
 
 
 if __name__ == "__main__":
