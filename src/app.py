@@ -152,9 +152,10 @@ def delete_record(record_id):
     cursor.close()
     return redirect(url_for('list_banco'))
 
-@app.route('/new_casa_de_bolsa')
+@app.route('/casa_de_bolsa')
 def new_casa_de_bolsa():
     return render_template('new_casa_de_bolsa.html')
+
 @app.route('/new_casa_de_bolsa', methods=['POST'])
 def new_casa_de_bolsa():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
