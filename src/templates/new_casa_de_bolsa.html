@@ -62,57 +62,57 @@
           <div class="cols-sm-10">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-university" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="cuenta_beneficiario" id="cuenta_beneficiario" placeholder="Nombre"/>
+              <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre"/>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="Direccion" class="cols-sm-2 control-label">Direccion </label>
+          <label for="Direccion" class="cols-sm-2 control-label">Dirección</label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user-check" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="beneficiario" id="beneficiario" placeholder="Direccion"/>
+              <span class="input-group-addon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Dirección"/>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="plaza_beneficiario" class="cols-sm-2 control-label">Representante</label>
+          <label for="Representante" class="cols-sm-2 control-label">Representante</label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-city" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="plaza_beneficiario" id="plaza_beneficiario" placeholder="Representante"/>
+              <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="representante" id="representante" placeholder="Representante"/>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="pais_beneficiario" class="cols-sm-2 control-label">Telefono de contacto</label>
+          <label for="telefono_contacto" class="cols-sm-2 control-label">Teléfono de Contacto</label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-flag" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="pais_beneficiario" id="pais_beneficiario" placeholder="Telefono de contacto"/>
+              <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="telefono_contacto" id="telefono_contacto" placeholder="Teléfono de contacto"/>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="banco" class="cols-sm-2 control-label">Correo contacto</label>
+          <label for="correo_contacto" class="cols-sm-2 control-label">Correo de Contacto</label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-university" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="banco" id="banco" placeholder="Correo contacto"/>
+              <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+              <input type="email" class="form-control" name="correo_contacto" id="correo_contacto" placeholder="Correo de contacto"/>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="aba" class="cols-sm-2 control-label">Sitio web </label>
+          <label for="sitio_web" class="cols-sm-2 control-label">Sitio Web</label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-barcode" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="aba" id="aba" placeholder="Sitio web"/>
+              <span class="input-group-addon"><i class="fa fa-globe" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="sitio_web" id="sitio_web" placeholder="Sitio web"/>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <input type="submit" value="Submit Payment Info" class="form-control btn btn-primary">
+          <input type="submit" value="Registrar Casa de Bolsa" class="form-control btn btn-primary">
         </div>
       </form>
     </div>
@@ -120,7 +120,7 @@
 </div>
 
 <script>
-document.getElementById('paymentForm').addEventListener('submit', function(event) {
+document.getElementById('Form').addEventListener('submit', function(event) {
     event.preventDefault();
 
     let valid = true;

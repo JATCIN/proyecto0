@@ -155,6 +155,46 @@ def delete_record(record_id):
 @app.route('/new_casa_de_bolsa')
 def new_casa_de_bolsa():
     return render_template('new_casa_de_bolsa.html')
+@app.route('/new_casa_de_bolsa', methods=['POST'])
+def new_casa_de_bolsa():
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    # Obtener los valores del formulario
+    nombre = request.form.get('nombre')
+    direccion = request.form.get('direccion')
+    representante = request.form.get('representante')
+    telefono_contacto = request.form.get('telefono_contacto')
+    correo_contacto = request.form.get('correo_contacto')
+    sitio_web = request.form.get('sitio_web')
+    
+    # Validar que los campos requeridos no estén vacíos
+    if not nombre:
+        return jsonify(status='error', message='Por favor, ingrese el nombre')
+    elif not direccion:
+        return jsonify(status='error', message='Por favor, ingrese la dirección')
+    elif not representante:
+        return jsonify(status='error', message='Por favor, ingrese el representante')
+    elif not telefono_contacto:
+        return jsonify(status='error', message='Por favor, ingrese el teléfono de contacto')
+    elif not correo_contacto:
+        return jsonify(status='error', message='Por favor, ingrese el correo de contacto')
+    elif not sitio_web:
+        return jsonify(status='error', message='Por favor, ingrese el sitio web')
+    else:
+        try:
+            # Insertar los datos en la tabla `casa_de_bolsa`
+            cursor.execute("""
+                INSERT INTO casa_de_bolsa (nombre, direccion, representante, telefono_contacto, correo_contacto, sitio_web, borrado)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """, (nombre, direccion, representante, telefono_contacto, correo_contacto, sitio_web, False))  # El campo borrado se establece en false
+            
+            conn.commit()  # Confirmar los cambios
+            cursor.close()
+            return jsonify(status='success', message='Casa de bolsa registrada exitosamente')
+        except Exception as e:
+            cursor.close()
+            return jsonify(status='error', message=str(e))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
