@@ -151,7 +151,7 @@ document.getElementById('Form').addEventListener('submit', function(event) {
         alert(errorMessage);
     } else {
         let formData = new FormData(this);
-        fetch('{{ url_for("payment") }}', {
+        fetch('{{ url_for("new_casa_de_bolsav2") }}', {
             method: 'POST',
             body: formData,
         })
