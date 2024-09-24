@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Nueva Casa de Bolsa{% endblock %}
+{% block title %}NewCasaDeBolsa{% endblock %}
 
 {% block content %}
 <style>
@@ -38,8 +38,9 @@
 <div class="container form-container">
   <div class="row justify-content-center">
     <div class="col-md-8 main-login main-center">
-      <h5 class="form-title">Información de la Casa de Bolsa</h5>
-
+      <h5 class="form-title">Información del pago</h5>
+      
+     
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           <div class="alert-container">
@@ -54,80 +55,64 @@
           </div>
         {% endif %}
       {% endwith %}
-
-      <form id="casaBolsaForm" autocomplete="off">
+      
+      <form id="paymentForm" autocomplete="off">
         <div class="form-group">
-          <label for="id" class="cols-sm-2 control-label">ID</label>
+          <label for="cuenta_beneficiario" class="cols-sm-2 control-label">Nombre</label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-id-badge" aria-hidden="true"></i></span>
-              <input type="number" class="form-control" name="id" id="id" placeholder="ID" readonly/>
+              <span class="input-group-addon"><i class="fa fa-university" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="cuenta_beneficiario" id="cuenta_beneficiario" placeholder="Cuenta Beneficiario"/>
             </div>
           </div>
         </div>
-
         <div class="form-group">
-          <label for="nombre" class="cols-sm-2 control-label">Nombre</label>
+          <label for="beneficiario" class="cols-sm-2 control-label">Direccion </label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-building" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" required/>
+              <span class="input-group-addon"><i class="fa fa-user-check" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="beneficiario" id="beneficiario" placeholder="Beneficiario"/>
             </div>
           </div>
         </div>
-
         <div class="form-group">
-          <label for="direccion" class="cols-sm-2 control-label">Dirección</label>
+          <label for="plaza_beneficiario" class="cols-sm-2 control-label">Representante</label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-map-marker-alt" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Dirección" required/>
+              <span class="input-group-addon"><i class="fa fa-city" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="plaza_beneficiario" id="plaza_beneficiario" placeholder="Plaza Beneficiario"/>
             </div>
           </div>
         </div>
-
         <div class="form-group">
-          <label for="representante" class="cols-sm-2 control-label">Representante</label>
+          <label for="pais_beneficiario" class="cols-sm-2 control-label">Telefono de contacto</label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="representante" id="representante" placeholder="Representante" required/>
+              <span class="input-group-addon"><i class="fa fa-flag" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="pais_beneficiario" id="pais_beneficiario" placeholder="País Beneficiario"/>
             </div>
           </div>
         </div>
-
         <div class="form-group">
-          <label for="telefono_contacto" class="cols-sm-2 control-label">Teléfono de Contacto</label>
+          <label for="banco" class="cols-sm-2 control-label">Correo contacto</label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" name="telefono_contacto" id="telefono_contacto" placeholder="Teléfono de Contacto"/>
+              <span class="input-group-addon"><i class="fa fa-university" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="banco" id="banco" placeholder="Banco"/>
             </div>
           </div>
         </div>
-
         <div class="form-group">
-          <label for="correo_contacto" class="cols-sm-2 control-label">Correo de Contacto</label>
+          <label for="aba" class="cols-sm-2 control-label">Sitio web </label>
           <div class="cols-sm-10">
             <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-              <input type="email" class="form-control" name="correo_contacto" id="correo_contacto" placeholder="Correo de Contacto"/>
+              <span class="input-group-addon"><i class="fa fa-barcode" aria-hidden="true"></i></span>
+              <input type="text" class="form-control" name="aba" id="aba" placeholder="ABA"/>
             </div>
           </div>
         </div>
-
         <div class="form-group">
-          <label for="sitio_web" class="cols-sm-2 control-label">Sitio Web</label>
-          <div class="cols-sm-10">
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-globe" aria-hidden="true"></i></span>
-              <input type="url" class="form-control" name="sitio_web" id="sitio_web" placeholder="Sitio Web"/>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <input type="submit" value="Enviar Información de la Casa de Bolsa" class="form-control btn btn-primary">
+          <input type="submit" value="Submit Payment Info" class="form-control btn btn-primary">
         </div>
       </form>
     </div>
@@ -135,7 +120,7 @@
 </div>
 
 <script>
-document.getElementById('casaBolsaForm').addEventListener('submit', function(event) {
+document.getElementById('paymentForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
     let valid = true;
@@ -143,9 +128,9 @@ document.getElementById('casaBolsaForm').addEventListener('submit', function(eve
     let errorMessage = '';
 
     for (let element of formElements) {
-        if (element.type !== 'submit' && element.value === '' && element.type !== 'checkbox') {
+        if (element.type !== 'submit' && element.value === '') {
             valid = false;
-            errorMessage = 'Por favor, complete todos los campos obligatorios.';
+            errorMessage = 'Por favor, complete todos los campos.';
             element.classList.add('is-invalid');
 
             let icon = document.createElement('span');
@@ -166,7 +151,7 @@ document.getElementById('casaBolsaForm').addEventListener('submit', function(eve
         alert(errorMessage);
     } else {
         let formData = new FormData(this);
-        fetch('{{ url_for("casa_bolsa") }}', {
+        fetch('{{ url_for("payment") }}', {
             method: 'POST',
             body: formData,
         })
@@ -174,7 +159,7 @@ document.getElementById('casaBolsaForm').addEventListener('submit', function(eve
         .then(data => {
             if (data.status === 'success') {
                 alert('Registrado exitosamente');
-                window.location.href = '{{ url_for("new_casa_bolsa") }}';
+                window.location.href = '{{ url_for("new_casa_de_bolsa") }}';
             } else {
                 alert(data.message);
             }
