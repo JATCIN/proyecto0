@@ -204,7 +204,7 @@ def list_casa_de_bolsa():
     return render_template('list_casa_de_bolsa.html', records=records)
 
 @app.route('/delete_casa_de_bolsa/<int:record_id>')
-def delete_record(record_id):
+def delete_casa_de_bolsa(record_id):
     cursor = conn.cursor()
     cursor.execute('DELETE FROM casa_de_bolsa WHERE id = %s', (record_id,))
     conn.commit()
