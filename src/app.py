@@ -154,7 +154,7 @@ def delete_record(record_id):
 
 @app.route('/new_casa_de_bolsa')
 def new_casa_de_bolsa():
-    return render_template('new_casa_de_bolsa')
+    return render_template('new_casa_de_bolsa.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
