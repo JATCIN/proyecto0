@@ -170,31 +170,39 @@ def new_casa_de_bolsav2():
     
     # Validar que los campos requeridos no estén vacíos
     if not nombre:
-        return jsonify(status='error', message='Por favor, ingrese el nombre')
+        flash('Por favor, ingrese el nombre', 'danger')
+        return redirect(url_for('list_casa_de_bolsa'))
     elif not direccion:
-        return jsonify(status='error', message='Por favor, ingrese la dirección')
+        flash('Por favor, ingrese la dirección', 'danger')
+        return redirect(url_for('list_casa_de_bolsa'))
     elif not representante:
-        return jsonify(status='error', message='Por favor, ingrese el representante')
+        flash('Por favor, ingrese el representante', 'danger')
+        return redirect(url_for('list_casa_de_bolsa'))
     elif not telefono_contacto:
-        return jsonify(status='error', message='Por favor, ingrese el teléfono de contacto')
+        flash('Por favor, ingrese el teléfono de contacto', 'danger')
+        return redirect(url_for('list_casa_de_bolsa'))
     elif not correo_contacto:
-        return jsonify(status='error', message='Por favor, ingrese el correo de contacto')
+        flash('Por favor, ingrese el correo de contacto', 'danger')
+        return redirect(url_for('list_casa_de_bolsa'))
     elif not sitio_web:
-        return jsonify(status='error', message='Por favor, ingrese el sitio web')
+        flash('Por favor, ingrese el sitio web', 'danger')
+        return redirect(url_for('list_casa_de_bolsa'))
     else:
         try:
             # Insertar los datos en la tabla `casa_de_bolsa`
-            cursor.execute("""
-                INSERT INTO casa_de_bolsa (nombre, direccion, representante, telefono_contacto, correo_contacto, sitio_web, borrado)
+            cursor.execute(""" 
+                INSERT INTO casa_de_bolsa (nombre, direccion, representante, telefono_contacto, correo_contacto, sitio_web, borrado) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
             """, (nombre, direccion, representante, telefono_contacto, correo_contacto, sitio_web, False))  # El campo borrado se establece en false
             
             conn.commit()  # Confirmar los cambios
             cursor.close()
-            return jsonify(status='success', message='Casa de bolsa registrada exitosamente')
+            flash('Casa de bolsa registrada exitosamente', 'success')
+            return redirect(url_for('list_casa_de_bolsa'))  # Redirigir a la lista después de un registro exitoso
         except Exception as e:
             cursor.close()
-            return jsonify(status='error', message=str(e))
+            flash(f'Error al registrar la Casa de Bolsa: {str(e)}', 'danger')
+            return redirect(url_for('list_casa_de_bolsa'))
         
 @app.route('/list_casa_de_bolsa')
 def list_casa_de_bolsa():
