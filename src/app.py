@@ -232,7 +232,66 @@ def delete_users(record_id):
         flash('Usuario eliminado correctamente.', 'success')
     except Exception as e:
         flash(f'Error al eliminar usuario: {str(e)}', 'danger')
-    return redirect(url_for('list_users'))
+    return redirect(url_for('list_users '))
+
+@app.route('/new_pact')
+def new_pact():
+    return render_template('new_pacto.html')
+
+@app.route('/pacto', methods=['POST'])
+def pacto():
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    # Obtener los datos del formulario
+    banco_origen = request.form.get('banco_origen')
+    banco_destino = request.form.get('banco_destino')
+    monto = request.form.get('monto')
+    cuenta_origen = request.form.get('cuenta_origen')
+    cuenta_destino = request.form.get('cuenta_destino')
+    tipo_cambio = request.form.get('tipo_cambio')
+    comision = request.form.get('comision')
+    fecha_hora = request.form.get('fecha_hora')
+    borrado_flag = request.form.get('borrado_flag')
+
+    # Obtener el user_id desde la sesión
+    user_id = session.get('user_id')
+
+    # Validación de los campos del formulario
+    if not banco_origen:
+        return jsonify(status='error', message='Por favor, ingrese el Banco de origen'), 400
+    elif not banco_destino:
+        return jsonify(status='error', message='Por favor, ingrese el Banco de destino'), 400
+    elif not monto:
+        return jsonify(status='error', message='Por favor, ingrese el monto'), 400
+    elif not cuenta_origen:
+        return jsonify(status='error', message='Por favor, ingrese la Cuenta de origen'), 400
+    elif not cuenta_destino:
+        return jsonify(status='error', message='Por favor, ingrese la Cuenta de destino'), 400
+    elif not tipo_cambio:
+        return jsonify(status='error', message='Por favor, ingrese el Tipo de cambio'), 400
+    elif not comision:
+        return jsonify(status='error', message='Por favor, ingrese la Comisión'), 400
+    elif not fecha_hora:
+        return jsonify(status='error', message='Por favor, ingrese la Fecha y hora de la transacción'), 400
+    elif not user_id:
+        return jsonify(status='error', message='Usuario no autenticado'), 401
+
+    try:
+        # Insertar los datos en la base de datos
+        cursor.execute("""
+            INSERT INTO pactos (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, fecha_hora, borrado, user_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, fecha_hora, borrado_flag, user_id))
+        
+        # Confirmar los cambios en la base de datos
+        conn.commit()
+
+        return jsonify(status='success', message='Pacto registrado exitosamente'), 200
+    except Exception as e:
+        # En caso de error, devolver el mensaje de error
+        return jsonify(status='error', message=str(e)), 500
+    finally:
+        cursor.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
