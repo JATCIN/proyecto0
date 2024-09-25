@@ -1,44 +1,32 @@
 {% extends 'layout.html' %}
 
-{% block title %}List of Banks{% endblock %}
+{% block title %}Listado de Usuarios{% endblock %}
 
 {% block content %}
 <div class="container">
-  <h2 class="mt-4">Listado de bancos </h2>
+  <h2 class="mt-4">Listado de Usuarios</h2>
   <table class="table table-bordered">
     <thead>
       <tr>
         <th>ID</th>
-        <th>Forma Liquidación</th>
-        <th>Cuenta Beneficiario</th>
-        <th>Beneficiario</th>
-        <th>Plaza Beneficiario</th>
-        <th>País Beneficiario</th>
-        <th>Banco</th>
-        <th>ABA</th>
-        <th>Ordenante</th>
-        <th>Actions</th>
+        <th>Nombre Completo</th>
+        <th>Email</th>
+        <th>Nombre de Usuario</th>
+        <th>Fecha de Creación</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      {% for record in records %}
+      {% for user in users %}
       <tr>
-        <td>{{ record.id }}</td>
-        <td>{{ record.forma_liquidacion }}</td>
-        <td>{{ record.cuenta_beneficiario }}</td>
-        <td>{{ record.beneficiario }}</td>
-        <td>{{ record.plaza_beneficiario }}</td>
-        <td>{{ record.pais_beneficiario }}</td>
-        <td>{{ record.banco }}</td>
-        <td>{{ record.aba }}</td>
-        <td>{{ record.ordenante }}</td>
+        <td>{{ user.id }}</td>
+        <td>{{ user.fullname }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.created_at }}</td>
         <td>
             <div class="btn-group" role="group" aria-label="Editar y eliminar">
-              <!-- <a href="{{ url_for('edit_record', record_id=record.id) }}" class="btn btn-warning btn-sm mr-2">
-                    <i class="fas fa-pencil-alt"></i> 
-                </a>-->
-            
-                <a href="{{ url_for('delete_record', record_id=record.id) }}" class="btn btn-danger btn-sm">
+                <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-danger btn-sm">
                     <i class="fas fa-trash-alt"></i> 
                 </a>
             </div>

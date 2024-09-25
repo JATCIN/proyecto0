@@ -170,39 +170,31 @@ def new_casa_de_bolsav2():
     
     # Validar que los campos requeridos no estén vacíos
     if not nombre:
-        flash('Por favor, ingrese el nombre', 'danger')
-        return redirect(url_for('list_casa_de_bolsa'))
+        return jsonify(status='error', message='Por favor, ingrese el nombre')
     elif not direccion:
-        flash('Por favor, ingrese la dirección', 'danger')
-        return redirect(url_for('list_casa_de_bolsa'))
+        return jsonify(status='error', message='Por favor, ingrese la dirección')
     elif not representante:
-        flash('Por favor, ingrese el representante', 'danger')
-        return redirect(url_for('list_casa_de_bolsa'))
+        return jsonify(status='error', message='Por favor, ingrese el representante')
     elif not telefono_contacto:
-        flash('Por favor, ingrese el teléfono de contacto', 'danger')
-        return redirect(url_for('list_casa_de_bolsa'))
+        return jsonify(status='error', message='Por favor, ingrese el teléfono de contacto')
     elif not correo_contacto:
-        flash('Por favor, ingrese el correo de contacto', 'danger')
-        return redirect(url_for('list_casa_de_bolsa'))
+        return jsonify(status='error', message='Por favor, ingrese el correo de contacto')
     elif not sitio_web:
-        flash('Por favor, ingrese el sitio web', 'danger')
-        return redirect(url_for('list_casa_de_bolsa'))
+        return jsonify(status='error', message='Por favor, ingrese el sitio web')
     else:
         try:
             # Insertar los datos en la tabla `casa_de_bolsa`
-            cursor.execute(""" 
-                INSERT INTO casa_de_bolsa (nombre, direccion, representante, telefono_contacto, correo_contacto, sitio_web, borrado) 
+            cursor.execute("""
+                INSERT INTO casa_de_bolsa (nombre, direccion, representante, telefono_contacto, correo_contacto, sitio_web, borrado)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
             """, (nombre, direccion, representante, telefono_contacto, correo_contacto, sitio_web, False))  # El campo borrado se establece en false
             
             conn.commit()  # Confirmar los cambios
             cursor.close()
-            flash('Casa de bolsa registrada exitosamente', 'success')
-            return redirect(url_for('list_casa_de_bolsa'))  # Redirigir a la lista después de un registro exitoso
+            return jsonify(status='success', message='Casa de bolsa registrada exitosamente')
         except Exception as e:
             cursor.close()
-            flash(f'Error al registrar la Casa de Bolsa: {str(e)}', 'danger')
-            return redirect(url_for('list_casa_de_bolsa'))
+            return jsonify(status='error', message=str(e))
         
 @app.route('/list_casa_de_bolsa')
 def list_casa_de_bolsa():
@@ -222,6 +214,25 @@ def delete_casa_de_bolsa(record_id):
     except Exception as e:
         flash(f'Error al eliminar la Casa de Bolsa: {str(e)}', 'danger')
     return redirect(url_for('list_casa_de_bolsa'))
+
+@app.route('/list_users')
+def list_users():
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM users')
+    records = cursor.fetchall()
+    return render_template('list_users.html', records=records)
+
+@app.route('/delete_users/<int:record_id>', methods=['POST'])
+def delete_users(record_id):
+    try:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM users WHERE id = %s', (record_id,))
+        conn.commit()
+        cursor.close()
+        flash('Usuario eliminado correctamente.', 'success')
+    except Exception as e:
+        flash(f'Error al eliminar usuario: {str(e)}', 'danger')
+    return redirect(url_for('list_users'))
 
 if __name__ == "__main__":
     app.run(debug=True)
