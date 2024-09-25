@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Listado de Usuarios{% endblock %}
+{% block title %}List of Casa de Bolsa{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -8,27 +8,26 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Nombre Completo</th>
+        <th>Nombre completo</th>
         <th>Email</th>
-        <th>Nombre de Usuario</th>
-        <th>Fecha de Creación</th>
-        <th>Acciones</th>
+        <th>Username</th>
+        <th>Created at</th>
       </tr>
     </thead>
     <tbody>
-        {% for record in records %}
+      {% for record in records %}
       <tr>
-        <td>{{ user.id }}</td>
-        <td>{{ user.fullname }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.username }}</td>
-        <td>{{ user.created_at }}</td>
+        <td>{{ record.fullname }}</td>
+        <td>{{ record.email }}</td>
+        <td>{{ record.username }}</td>
+        <td>{{ record.created_at }}</td>
         <td>
             <div class="btn-group" role="group" aria-label="Editar y eliminar">
-                <a href="{{ url_for('delete_user', user_id=user.id) }}" class="btn btn-danger btn-sm">
-                    <i class="fas fa-trash-alt"></i> 
-                </a>
+                <form action="{{ url_for('delete_users', record_id=record.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
             </div>
         </td>
       </tr>
