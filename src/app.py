@@ -270,9 +270,9 @@ def pacto():
         try:
             # Insertar los datos en la tabla `pacto`
             cursor.execute("""
-                INSERT INTO pacto (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, borrado)
+                INSERT INTO pacto (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, status)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, False))  # El campo borrado se establece en false
+            """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, True))  # El campo borrado se establece en false
             
             conn.commit()  # Confirmar los cambios
             cursor.close()

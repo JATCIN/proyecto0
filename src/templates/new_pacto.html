@@ -143,6 +143,7 @@ document.getElementById('Form').addEventListener('submit', function(event) {
     let formElements = this.elements;
     let errorMessage = '';
 
+    // Validaciones frontend
     for (let element of formElements) {
         if (element.type !== 'submit' && element.value === '') {
             valid = false;
