@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block title %}List of pacts{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mt-4">Listado de Pactos</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Banco origen</th>
+        <th>Banco destino</th>
+        <th>Monto</th>
+        <th>Cuenta origen</th>
+        <th>Cuenta destino</th>
+        <th>Tipo de cambio</th>
+        <th>Comision</th>
+        <th>Status</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in records %}
+      <tr>
+        <td>{{ record.id }}</td>
+        <td>{{ record.banco_origen }}</td>
+        <td>{{ record.banco_destino }}</td>
+        <td>{{ record.monto }}</td>
+        <td>{{ record.cuenta_origen }}</td>
+        <td>{{ record.cuenta_destino }}</td>
+        <td>{{ record.tipo_cambio }}</td>
+        <td>{{ record.comision }}</td>
+        <td>{{ record.status }}</td>
+        <td>{{ record.fecha_hora }}</td>
+        <td>
+            <div class="btn-group" role="group" aria-label="Editar y eliminar">
+                <form action="{{ url_for('delete_pacto', record_id=record.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

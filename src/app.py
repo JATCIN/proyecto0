@@ -272,7 +272,7 @@ def pacto():
             cursor.execute("""
                 INSERT INTO pacto (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, status)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, True))  # El campo borrado se establece en false
+            """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, True))  
             
             conn.commit()  # Confirmar los cambios
             cursor.close()
@@ -280,6 +280,25 @@ def pacto():
         except Exception as e:
             cursor.close()
             return jsonify(status='error', message=str(e))
+        
+@app.route('/list_pactos')
+def list_pactos():
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM pacto')
+    records = cursor.fetchall()
+    return render_template('list_pactos.html', records=records)
+    
+@app.route('/delete_pacto/<int:record_id>', methods=['POST'])
+def delete_pacto(record_id):
+    try:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM pacto WHERE id = %s', (record_id,))
+        conn.commit()
+        cursor.close()
+        flash('Pacto eliminado correctamente.', 'success')
+    except Exception as e:
+        flash(f'Error al eliminar Pacto: {str(e)}', 'danger')
+    return redirect(url_for('list_pactos'))
 
 if __name__ == "__main__":
     app.run(debug=True)
