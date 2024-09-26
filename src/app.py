@@ -240,7 +240,9 @@ def new_pact():
 
 @app.route('/pacto', methods=['POST'])
 def pacto():
-    
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    # Obtener los valores del formulario
     banco_origen = request.form.get('banco_origen')
     banco_destino = request.form.get('banco_destino')
     monto = request.form.get('monto')
@@ -248,21 +250,36 @@ def pacto():
     cuenta_destino = request.form.get('cuenta_destino')
     tipo_cambio = request.form.get('tipo_cambio')
     comision = request.form.get('comision')
-
-    if not banco_origen or not banco_destino or not monto or not cuenta_origen or not cuenta_destino or not tipo_cambio or not comision:
-        return jsonify(status='error', message='Por favor, complete todos los campos'), 400
-
-    try:
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO pacto (user_id, banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision))
-        conn.commit()
-        cursor.close()
-        return jsonify(status='success', message='Pacto registrado exitosamente')
-    except Exception as e:
-        return jsonify(status='error', message=str(e)), 500
+    
+    # Validar que los campos requeridos no estén vacíos
+    if not banco_origen:
+        return jsonify(status='error', message='Por favor, ingrese el banco de origen')
+    elif not banco_destino:
+        return jsonify(status='error', message='Por favor, ingrese el banco de destino')
+    elif not monto:
+        return jsonify(status='error', message='Por favor, ingrese el monto')
+    elif not cuenta_origen:
+        return jsonify(status='error', message='Por favor, ingrese la cuenta de origen')
+    elif not cuenta_destino:
+        return jsonify(status='error', message='Por favor, ingrese la cuenta de destino')
+    elif not tipo_cambio:
+        return jsonify(status='error', message='Por favor, ingrese el tipo de cambio')
+    elif not comision:
+        return jsonify(status='error', message='Por favor, ingrese la comisión')
+    else:
+        try:
+            # Insertar los datos en la tabla `pacto`
+            cursor.execute("""
+                INSERT INTO pacto (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, borrado)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, False))  # El campo borrado se establece en false
+            
+            conn.commit()  # Confirmar los cambios
+            cursor.close()
+            return jsonify(status='success', message='Pacto registrado exitosamente')
+        except Exception as e:
+            cursor.close()
+            return jsonify(status='error', message=str(e))
 
 if __name__ == "__main__":
     app.run(debug=True)
