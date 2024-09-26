@@ -240,10 +240,6 @@ def new_pact():
 
 @app.route('/pacto', methods=['POST'])
 def pacto():
-    if 'user_id' not in session:
-        return jsonify(status='error', message='No has iniciado sesión'), 401
-
-    user_id = session['user_id']
     
     banco_origen = request.form.get('banco_origen')
     banco_destino = request.form.get('banco_destino')
@@ -259,9 +255,9 @@ def pacto():
     try:
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO pactos (user_id, banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision)
+            INSERT INTO pacto (user_id, banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """, (user_id, banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision))
+        """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision))
         conn.commit()
         cursor.close()
         return jsonify(status='success', message='Pacto registrado exitosamente')
