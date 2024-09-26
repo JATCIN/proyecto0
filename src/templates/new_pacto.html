@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Registrar Casa de Bolsa{% endblock %}
+{% block title %}Registrar pactos{% endblock %}
 
 {% block content %}
 <style>
@@ -38,7 +38,7 @@
 <div class="container form-container">
   <div class="row justify-content-center">
     <div class="col-md-8 main-login main-center">
-      <h5 class="form-title">Información Casa de Bolsa</h5>
+      <h5 class="form-title">Información del pacto</h5>
       
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -147,13 +147,6 @@
               </select>
             </div>
           </div>
-        </div>
-
-        <!-- Campo oculto para el user_id -->
-        <input type="hidden" name="user_id" id="user_id" value="{{ session['user_id'] }}" />
-
-        <div class="form-group">
-          <input type="submit" value="Registrar Casa de Bolsa" class="form-control btn btn-primary">
         </div>
       </form>
     </div>
