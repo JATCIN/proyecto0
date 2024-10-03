@@ -170,7 +170,7 @@ document.getElementById('Form').addEventListener('submit', function(event) {
         alert(errorMessage);
     } else {
         let formData = new FormData(this);
-        fetch('{{ url_for("create_transfer") }}', {
+        fetch('{{ url_for("new_transfer") }}', {
             method: 'POST',
             body: formData,
         })
