@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Crear Nueva Transferencia</h2>
+    
+    <form method="POST" action="{{ url_for('create_transfer') }}" class="form-transfer">
+        <div class="form-group">
+            <label for="origin_bank">Banco de Origen</label>
+            <input type="text" class="form-control" id="origin_bank" name="origin_bank" 
+                   placeholder="Introduce el banco de origen" required>
+        </div>
+
+        <div class="form-group">
+            <label for="destination_bank">Banco de Destino</label>
+            <input type="text" class="form-control" id="destination_bank" name="destination_bank" 
+                   placeholder="Introduce el banco de destino" required>
+        </div>
+
+        <div class="form-group">
+            <label for="origin_account">Cuenta de Origen</label>
+            <input type="text" class="form-control" id="origin_account" name="origin_account" 
+                   placeholder="Introduce la cuenta de origen" required>
+        </div>
+
+        <div class="form-group">
+            <label for="destination_account">Cuenta de Destino</label>
+            <input type="text" class="form-control" id="destination_account" name="destination_account" 
+                   placeholder="Introduce la cuenta de destino" required>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Monto</label>
+            <input type="number" step="0.01" class="form-control" id="amount" name="amount" 
+                   placeholder="Introduce el monto de la transferencia" required>
+        </div>
+
+        <div class="form-group">
+            <label for="exchange_rate">Tipo de Cambio</label>
+            <input type="number" step="0.0001" class="form-control" id="exchange_rate" name="exchange_rate" 
+                   placeholder="Introduce el tipo de cambio" required>
+        </div>
+
+        <div class="form-group">
+            <label for="commission">Comisión</label>
+            <input type="number" step="0.01" class="form-control" id="commission" name="commission" 
+                   placeholder="Introduce la comisión" required>
+        </div>
+
+        <!-- Este campo oculto enviará el user_id a partir de la sesión -->
+        <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
+
+        <!-- pacto_id será null al principio, se asignará más tarde -->
+        <input type="hidden" name="pact_id" value="null">
+
+        <button type="submit" class="btn btn-primary">Crear Transferencia</button>
+    </form>
+</div>
+{% endblock %}

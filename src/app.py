@@ -300,6 +300,58 @@ def delete_pacto(record_id):
         flash(f'Error al eliminar Pacto: {str(e)}', 'danger')
     return redirect(url_for('list_pactos'))
 
+@app.route('/new_transfer1')
+def new_transfer1():
+    return render_template('new_transfer.html')
+
+@app.route('/new_transfer', methods=['GET', 'POST'])
+def new_transfer():
+    if request.method == 'POST':
+        # Validar que los campos no estén vacíos
+        origin_bank = request.form.get('origin_bank', None)
+        destination_bank = request.form.get('destination_bank', None)
+        origin_account = request.form.get('origin_account', None)
+        destination_account = request.form.get('destination_account', None)
+        amount = request.form.get('amount', None)
+        exchange_rate = request.form.get('exchange_rate', None)
+        commission = request.form.get('commission', None)
+
+        # Verificar que no haya campos vacíos
+        if origin_bank and destination_bank and origin_account and destination_account and amount and exchange_rate and commission:
+            try:
+                # Obtener el ID del usuario desde la sesión
+                user_id = session['id']  # Cambiamos 'user_id' por 'id' según tu implementación
+                pact_id = None  # Este campo será asignado en otra etapa
+                created_at = datetime.now()
+
+                # Crear la nueva instancia del modelo Transfer
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+                cursor.execute("""
+                    INSERT INTO transfers (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, created_at, updated_at, active)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, float(amount), float(exchange_rate), float(commission), created_at, created_at, True))
+
+                conn.commit()
+                cursor.close()
+
+                # Redirigir a una página de éxito o lista de transferencias
+                flash('Transferencia creada exitosamente', 'success')
+                return redirect(url_for('transfer_list'))  # Cambiar por la vista de tu lista de transferencias
+
+            except Exception as e:
+                # En caso de error en la base de datos o la lógica
+                conn.rollback()
+                flash(f'Ocurrió un error al crear la transferencia: {str(e)}', 'danger')
+                return redirect(url_for('new_transfer'))
+
+        else:
+            # Si algún campo está vacío, mostrar mensaje de error
+            flash('Todos los campos son obligatorios', 'danger')
+            return redirect(url_for('new_transfer'))
+
+    # En caso de GET, renderizamos el formulario de nueva transferencia
+    return render_template('new_transfer.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
 
