@@ -334,7 +334,7 @@ def new_transfer():
                 # Crear la nueva instancia del modelo Transfer
                 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
                 cursor.execute("""
-                    INSERT INTO transfers (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, updated_at, active)
+                    INSERT INTO transferencias (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, updated_at, active)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), TRUE)
                 """, (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, float(amount), float(exchange_rate), float(commission)))
 
@@ -343,7 +343,7 @@ def new_transfer():
 
                 # Redirigir a una página de éxito o lista de transferencias
                 flash('Transferencia creada exitosamente', 'success')
-                return redirect(url_for('transfer_list'))
+                return redirect(url_for('new_transfer'))
 
             except Exception as e:
                 # En caso de error en la base de datos o la lógica
