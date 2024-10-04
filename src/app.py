@@ -394,6 +394,18 @@ def list_transferencias():
 
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para ver las transferencias')
+    
+@app.route('/delete_transfer/<int:record_id>', methods=['POST'])
+def delete_transfer(record_id):
+    try:
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM transferencias WHERE id = %s', (record_id,))
+        conn.commit()
+        cursor.close()
+        flash('Transferencia eliminada correctamente.', 'success')
+    except Exception as e:
+        flash(f'Error al eliminar transferencia: {str(e)}', 'danger')
+    return redirect(url_for('list_transferencias'))
    
 
 if __name__ == "__main__":

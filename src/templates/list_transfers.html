@@ -8,7 +8,7 @@
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>ID transferencia</th>
         <th>Usuario</th>
         <th>Email</th>
         <th>Banco origen</th>
@@ -19,6 +19,7 @@
         <th>Tipo de cambio</th>
         <th>Comisión</th>
         <th>Fecha</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -35,6 +36,15 @@
         <td>{{ record.exchange_rate }}</td>
         <td>{{ record.commission }}</td>
         <td>{{ record.created_at }}</td>
+        <td></td>
+            <div class="btn-group" role="group" aria-label="Editar y eliminar">
+                <form action="{{ url_for('delete_transfer', record_id=record.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta transferencia?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </div>
+        </td>
       </tr>
       {% endfor %}
     </tbody>
