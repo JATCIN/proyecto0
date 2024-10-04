@@ -346,7 +346,7 @@ def new_transfer():
                     # Insertar la nueva transferencia en la base de datos
                     cursor.execute("""
                         INSERT INTO transferencias (user_id, pacto_id, destination_account, amount, destination_bank, exchange_rate, commission, origin_bank, origin_account) 
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """, (id, None, destination_account, amount, destination_bank, exchange_rate, commission, origin_bank, origin_account))
                     
                     conn.commit()  # Confirmar los cambios
