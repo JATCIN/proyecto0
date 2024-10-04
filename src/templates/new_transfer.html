@@ -127,8 +127,7 @@
           </div>
         </div>
 
-        <input type="hidden" name="user_id" value="{{ session['user_id'] }}">
-        <input type="hidden" name="pact_id" value="null">
+        <input type="hidden" name="user_id" value="{{ session.get('user_id', '') }}">
 
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Crear Transferencia</button>

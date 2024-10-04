@@ -302,6 +302,10 @@ def delete_pacto(record_id):
 
 @app.route('/new_transfer1')
 def new_transfer1():
+    if 'user_id' in session:
+        print(f"User ID en la sesión: {session['user_id']}")
+    else:
+        print("No se encontró el user_id en la sesión")
     return render_template('new_transfer.html')
 
 @app.route('/new_transfer', methods=['GET', 'POST'])
@@ -322,14 +326,14 @@ def new_transfer():
                 # Obtener el ID del usuario desde la sesión
                 user_id = session['id']  # Cambiamos 'user_id' por 'id' según tu implementación
                 pact_id = None  # Este campo será asignado en otra etapa
-                created_at = datetime.now()
+               
 
                 # Crear la nueva instancia del modelo Transfer
                 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
                 cursor.execute("""
-                    INSERT INTO transfers (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, created_at, updated_at, active)
+                    INSERT INTO transfers (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, updated_at, active)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                """, (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, float(amount), float(exchange_rate), float(commission), created_at, created_at, True))
+                """, (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, float(amount), float(exchange_rate), float(commission), True))
 
                 conn.commit()
                 cursor.close()
