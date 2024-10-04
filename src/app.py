@@ -310,12 +310,12 @@ def new_transfer1():
 
 @app.route('/new_transfer', methods=['GET', 'POST'])
 def new_transfer():
-    if 'id' not in session:  # Verifica si el ID del usuario está en la sesión
+    if not session.get('loggedin'):  # Verifica si el usuario ha iniciado sesión
         flash('Debes iniciar sesión para acceder a esta página.', 'danger')
         return redirect(url_for('login'))  # Redirige a la página de inicio de sesión
 
     if request.method == 'POST':
-        # Obtener datos del formulario
+        # Validar que los campos no estén vacíos
         origin_bank = request.form.get('origin_bank')
         destination_bank = request.form.get('destination_bank')
         origin_account = request.form.get('origin_account')
@@ -333,9 +333,9 @@ def new_transfer():
 
                 # Crear la nueva instancia del modelo Transfer
                 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-                cursor.execute("""
-                    INSERT INTO transferencias (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, updated_at, active)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), TRUE)
+                cursor.execute(""" 
+                    INSERT INTO transfers (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, updated_at, active) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), TRUE) 
                 """, (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, float(amount), float(exchange_rate), float(commission)))
 
                 conn.commit()
@@ -343,7 +343,7 @@ def new_transfer():
 
                 # Redirigir a una página de éxito o lista de transferencias
                 flash('Transferencia creada exitosamente', 'success')
-                return redirect(url_for('new_transfer'))
+                return redirect(url_for('transfer_list'))
 
             except Exception as e:
                 # En caso de error en la base de datos o la lógica
