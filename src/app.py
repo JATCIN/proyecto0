@@ -310,37 +310,40 @@ def new_transfer1():
 
 @app.route('/new_transfer', methods=['GET', 'POST'])
 def new_transfer():
+    if 'id' not in session:
+        flash('Debes iniciar sesión para acceder a esta página.', 'danger')
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
         # Validar que los campos no estén vacíos
-        origin_bank = request.form.get('origin_bank', None)
-        destination_bank = request.form.get('destination_bank', None)
-        origin_account = request.form.get('origin_account', None)
-        destination_account = request.form.get('destination_account', None)
-        amount = request.form.get('amount', None)
-        exchange_rate = request.form.get('exchange_rate', None)
-        commission = request.form.get('commission', None)
+        origin_bank = request.form.get('origin_bank')
+        destination_bank = request.form.get('destination_bank')
+        origin_account = request.form.get('origin_account')
+        destination_account = request.form.get('destination_account')
+        amount = request.form.get('amount')
+        exchange_rate = request.form.get('exchange_rate')
+        commission = request.form.get('commission')
 
         # Verificar que no haya campos vacíos
-        if origin_bank and destination_bank and origin_account and destination_account and amount and exchange_rate and commission:
+        if all([origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission]):
             try:
                 # Obtener el ID del usuario desde la sesión
-                user_id = session['id']  # Cambiamos 'user_id' por 'id' según tu implementación
+                user_id = session['id']
                 pact_id = None  # Este campo será asignado en otra etapa
-               
 
                 # Crear la nueva instancia del modelo Transfer
                 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
                 cursor.execute("""
                     INSERT INTO transfers (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, updated_at, active)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                """, (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, float(amount), float(exchange_rate), float(commission), True))
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), TRUE)
+                """, (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, float(amount), float(exchange_rate), float(commission)))
 
                 conn.commit()
                 cursor.close()
 
                 # Redirigir a una página de éxito o lista de transferencias
                 flash('Transferencia creada exitosamente', 'success')
-                return redirect(url_for('transfer_list'))  # Cambiar por la vista de tu lista de transferencias
+                return redirect(url_for('transfer_list'))
 
             except Exception as e:
                 # En caso de error en la base de datos o la lógica
