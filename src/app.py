@@ -20,7 +20,7 @@ conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_
 @app.route('/')
 def home():
     if 'loggedin' in session:
-        return render_template('home.html', username=session['username'], id=session['id'])
+        return render_template('home.html', username=session['username'])
     return redirect(url_for('login'))
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -311,47 +311,60 @@ def new_transfer1():
 @app.route('/new_transfer', methods=['GET', 'POST'])
 def new_transfer():
     # Verificamos si el usuario ha iniciado sesión
-    if 'loggedin' in session:  
+    if 'loggedin' in session:
         id = session['id']  # Obtenemos el user_id de la sesión
-        
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
         if request.method == 'POST':  # Procesar los datos cuando se envía el formulario
             # Recoger datos del formulario
-            cuenta_beneficiario = request.form['cuenta_beneficiario']
-            monto = request.form['monto']
-            banco_destino = request.form['banco_destino']
-            tipo_cambio = request.form['tipo_cambio']
-            comision = request.form['comision']
-            fecha_hora = request.form['fecha_hora']
-            
-            # Validación básica (opcional)
-            if not cuenta_beneficiario or not monto or not banco_destino:
-                flash('Por favor, rellena todos los campos requeridos', 'danger')
-                return render_template('new_transfer.html', id=id)
-            
-            try:
-                # Insertar la nueva transferencia en la base de datos
-                cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-                cursor.execute("""
-                    INSERT INTO transfers (user_id, cuenta_beneficiario, monto, banco_destino, tipo_cambio, comision, fecha_hora) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
-                """, (id, cuenta_beneficiario, monto, banco_destino, tipo_cambio, comision, fecha_hora))
-                conn.commit()
-                cursor.close()
+            origin_bank = request.form.get('origin_bank')
+            destination_bank = request.form.get('destination_bank')
+            origin_account = request.form.get('origin_account')
+            destination_account = request.form.get('destination_account')  
+            amount = request.form.get('amount')  
+            exchange_rate = request.form.get('exchange_rate')  
+            commission = request.form.get('commission')  
+           
 
-                flash('Transferencia realizada con éxito', 'success')
-                return redirect(url_for('home'))  # Redirigimos al usuario a la página principal
-            except Exception as e:
-                flash(f'Ocurrió un error al realizar la transferencia: {e}', 'danger')
-                return render_template('new_transfer.html', id=id)
+            # Validar que los campos requeridos no estén vacíos
+            if not destination_account:
+                return jsonify(status='error', message='Por favor, ingrese la cuenta beneficiario')
+            elif not amount:
+                return jsonify(status='error', message='Por favor, ingrese el monto')
+            elif not destination_bank:
+                return jsonify(status='error', message='Por favor, ingrese el banco destino')
+            elif not exchange_rate:
+                return jsonify(status='error', message='Por favor, ingrese el tipo de cambio')
+            elif not commission:
+                return jsonify(status='error', message='Por favor, ingrese la comisión')
+            elif not origin_bank:
+                return jsonify(status='error', message='Por favor, ingrese el banco origen')
+            elif not origin_account:
+                return jsonify(status='error', message='Por favor, ingrese la cuenta origen')
+            else:
+                try:
+                    # Insertar la nueva transferencia en la base de datos
+                    cursor.execute("""
+                        INSERT INTO transfers (user_id, destination_account, amount, destination_bank, exchange_rate, commission, origin_bank, origin_account) 
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    """, (id, destination_account, amount, destination_bank, exchange_rate, commission, origin_bank, origin_account))
+                    
+                    conn.commit()  # Confirmar los cambios
+                    cursor.close()
+                    return jsonify(status='success', message='Transferencia realizada con éxito')
+                except Exception as e:
+                    cursor.close()
+                    return jsonify(status='error', message=str(e))
+        
         else:
             # Mostrar el formulario si es un GET request
             return render_template('new_transfer.html', id=id)
-    
+
     else:
         # Si no ha iniciado sesión, redirigir a la página de login
-        flash('Por favor, inicia sesión para realizar una transferencia', 'danger')
-        return redirect(url_for('login'))
-    
+        return jsonify(status='error', message='Por favor, inicia sesión para realizar una transferencia')
+   
+
 if __name__ == "__main__":
     app.run(debug=True)
 
