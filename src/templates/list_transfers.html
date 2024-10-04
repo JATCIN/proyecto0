@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block title %}Listado de Transferencias{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mt-4">Registro de Transferencias</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Email</th>
+        <th>Banco origen</th>
+        <th>Cuenta origen</th>
+        <th>Banco destino</th>
+        <th>Cuenta destino</th>
+        <th>Monto</th>
+        <th>Tipo de cambio</th>
+        <th>Comisión</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for transferencia in transferencias %}
+      <tr>
+        <td>{{ transferencia.id }}</td>
+        <td>{{ transferencia.fullname }}</td>
+        <td>{{ transferencia.email }}</td>
+        <td>{{ transferencia.origin_bank }}</td>
+        <td>{{ transferencia.origin_account }}</td>
+        <td>{{ transferencia.destination_bank }}</td>
+        <td>{{ transferencia.destination_account }}</td>
+        <td>{{ transferencia.amount }}</td>
+        <td>{{ transferencia.exchange_rate }}</td>
+        <td>{{ transferencia.commission }}</td>
+        <td>{{ transferencia.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

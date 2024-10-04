@@ -368,6 +368,32 @@ def new_transfer():
     else:
         # Si no ha iniciado sesión, redirigir a la página de login
         return jsonify(status='error', message='Por favor, inicia sesión para realizar una transferencia')
+    
+@app.route('/list_transferencias', methods=['GET'])
+def list_transferencias():
+    # Verificamos si el usuario ha iniciado sesión
+    if 'loggedin' in session:
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        try:
+            # Ejecutar la consulta para obtener las transferencias con detalles del usuario
+            cursor.execute("""
+                SELECT t.*, u.fullname, u.email
+                FROM transferencias t
+                JOIN users u ON t.user_id = u.id;
+            """)
+            transferencias = cursor.fetchall()  # Obtener todos los registros
+            
+            return render_template('transferencias.html', transferencias=transferencias)
+        
+        except Exception as e:
+            return jsonify(status='error', message=str(e))
+        
+        finally:
+            cursor.close()  # Cerrar el cursor
+
+    else:
+        return jsonify(status='error', message='Por favor, inicia sesión para ver las transferencias')
    
 
 if __name__ == "__main__":
