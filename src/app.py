@@ -310,12 +310,13 @@ def new_transfer1():
 
 @app.route('/new_transfer', methods=['GET', 'POST'])
 def new_transfer():
-    if not session.get('loggedin'):  # Verifica si el usuario ha iniciado sesión
+    # Verificar si el usuario está logeado
+    if not session.get('loggedin'):
         flash('Debes iniciar sesión para acceder a esta página.', 'danger')
-        return redirect(url_for('login'))  # Redirige a la página de inicio de sesión
+        return redirect(url_for('login'))
 
     if request.method == 'POST':
-        # Validar que los campos no estén vacíos
+        # Obtener los datos del formulario
         origin_bank = request.form.get('origin_bank')
         destination_bank = request.form.get('destination_bank')
         origin_account = request.form.get('origin_account')
@@ -324,39 +325,40 @@ def new_transfer():
         exchange_rate = request.form.get('exchange_rate')
         commission = request.form.get('commission')
 
-        # Verificar que no haya campos vacíos
+        # Validar que todos los campos tengan datos
         if all([origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission]):
             try:
-                # Obtener el ID del usuario desde la sesión
+                # Obtener el ID del usuario de la sesión activa
                 user_id = session['id']
-                pact_id = None  # Este campo será asignado en otra etapa
+                pact_id = None  # Valor por defecto, esto lo ajustarás según tu lógica de negocio
 
-                # Crear la nueva instancia del modelo Transfer
+                # Conectar a la base de datos e insertar la nueva transferencia
                 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-                cursor.execute(""" 
-                    INSERT INTO transfers (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, updated_at, active) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), TRUE) 
+                cursor.execute("""
+                    INSERT INTO transfers (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, updated_at, active)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), TRUE)
                 """, (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, float(amount), float(exchange_rate), float(commission)))
 
+                # Confirmar la transacción
                 conn.commit()
                 cursor.close()
 
-                # Redirigir a una página de éxito o lista de transferencias
+                # Redirigir a una página de éxito
                 flash('Transferencia creada exitosamente', 'success')
                 return redirect(url_for('transfer_list'))
 
             except Exception as e:
-                # En caso de error en la base de datos o la lógica
+                # Manejar errores en la base de datos
                 conn.rollback()
                 flash(f'Ocurrió un error al crear la transferencia: {str(e)}', 'danger')
                 return redirect(url_for('new_transfer'))
 
         else:
-            # Si algún campo está vacío, mostrar mensaje de error
+            # Si falta algún dato en el formulario
             flash('Todos los campos son obligatorios', 'danger')
             return redirect(url_for('new_transfer'))
 
-    # En caso de GET, renderizamos el formulario de nueva transferencia
+    # Si es una solicitud GET, renderizar el formulario
     return render_template('new_transfer.html')
 
 if __name__ == "__main__":
