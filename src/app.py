@@ -310,6 +310,9 @@ def new_transfer1():
 
 @app.route('/new_transfer', methods=['GET', 'POST'])
 def new_transfer():
+    if 'id' not in session:  # Verifica si el ID del usuario está en la sesión
+        flash('Debes iniciar sesión para acceder a esta página.', 'danger')
+        return redirect(url_for('login'))  # Redirige a la página de inicio de sesión
     if 'id' not in session:
         flash('Debes iniciar sesión para acceder a esta página.', 'danger')
         return redirect(url_for('login'))
