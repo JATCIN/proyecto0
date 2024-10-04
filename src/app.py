@@ -312,8 +312,7 @@ def new_transfer1():
 def new_transfer():
     # Verificamos si el usuario ha iniciado sesión
     if 'loggedin' in session:  
-        user_id = session['id']  # Obtenemos el user_id de la sesión
-        username = session['username']  # Obtenemos el nombre de usuario de la sesión
+        id = session['id']  # Obtenemos el user_id de la sesión
         
         if request.method == 'POST':  # Procesar los datos cuando se envía el formulario
             # Recoger datos del formulario
@@ -327,7 +326,7 @@ def new_transfer():
             # Validación básica (opcional)
             if not cuenta_beneficiario or not monto or not banco_destino:
                 flash('Por favor, rellena todos los campos requeridos', 'danger')
-                return render_template('new_transfer.html', username=username)
+                return render_template('new_transfer.html', id=id)
             
             try:
                 # Insertar la nueva transferencia en la base de datos
@@ -335,7 +334,7 @@ def new_transfer():
                 cursor.execute("""
                     INSERT INTO transfers (user_id, cuenta_beneficiario, monto, banco_destino, tipo_cambio, comision, fecha_hora) 
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
-                """, (user_id, cuenta_beneficiario, monto, banco_destino, tipo_cambio, comision, fecha_hora))
+                """, (id, cuenta_beneficiario, monto, banco_destino, tipo_cambio, comision, fecha_hora))
                 conn.commit()
                 cursor.close()
 
@@ -343,10 +342,10 @@ def new_transfer():
                 return redirect(url_for('home'))  # Redirigimos al usuario a la página principal
             except Exception as e:
                 flash(f'Ocurrió un error al realizar la transferencia: {e}', 'danger')
-                return render_template('new_transfer.html', username=username)
+                return render_template('new_transfer.html', id=id)
         else:
             # Mostrar el formulario si es un GET request
-            return render_template('new_transfer.html', username=username)
+            return render_template('new_transfer.html', id=id)
     
     else:
         # Si no ha iniciado sesión, redirigir a la página de login
