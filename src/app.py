@@ -310,56 +310,47 @@ def new_transfer1():
 
 @app.route('/new_transfer', methods=['GET', 'POST'])
 def new_transfer():
-    # Verificar si el usuario está logeado
-    if not session.get('loggedin'):
-        flash('Debes iniciar sesión para acceder a esta página.', 'danger')
-        return redirect(url_for('login'))
-
-    if request.method == 'POST':
-        # Obtener los datos del formulario
-        origin_bank = request.form.get('origin_bank')
-        destination_bank = request.form.get('destination_bank')
-        origin_account = request.form.get('origin_account')
-        destination_account = request.form.get('destination_account')
-        amount = request.form.get('amount')
-        exchange_rate = request.form.get('exchange_rate')
-        commission = request.form.get('commission')
-
-        # Validar que todos los campos tengan datos
-        if all([origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission]):
+    # Verificamos si el usuario ha iniciado sesión
+    if 'loggedin' in session:  
+        user_id = session['id']  # Obtenemos el user_id de la sesión
+        
+        if request.method == 'POST':  # Procesar los datos cuando se envía el formulario
+            # Recoger datos del formulario
+            cuenta_beneficiario = request.form['cuenta_beneficiario']
+            monto = request.form['monto']
+            banco_destino = request.form['banco_destino']
+            tipo_cambio = request.form['tipo_cambio']
+            comision = request.form['comision']
+            fecha_hora = request.form['fecha_hora']
+            
+            # Validación básica (opcional)
+            if not cuenta_beneficiario or not monto or not banco_destino:
+                flash('Por favor, rellena todos los campos requeridos', 'danger')
+                return render_template('new_transfer.html', user_id=user_id)
+            
             try:
-                # Obtener el ID del usuario de la sesión activa
-                user_id = session['id']
-                pact_id = None  # Valor por defecto, esto lo ajustarás según tu lógica de negocio
-
-                # Conectar a la base de datos e insertar la nueva transferencia
+                # Insertar la nueva transferencia en la base de datos
                 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
                 cursor.execute("""
-                    INSERT INTO transfers (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, amount, exchange_rate, commission, updated_at, active)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), TRUE)
-                """, (user_id, pact_id, origin_bank, destination_bank, origin_account, destination_account, float(amount), float(exchange_rate), float(commission)))
-
-                # Confirmar la transacción
+                    INSERT INTO transferencias (user_id, cuenta_beneficiario, monto, banco_destino, tipo_cambio, comision, fecha_hora) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """, (user_id, cuenta_beneficiario, monto, banco_destino, tipo_cambio, comision, fecha_hora))
                 conn.commit()
                 cursor.close()
 
-                # Redirigir a una página de éxito
-                flash('Transferencia creada exitosamente', 'success')
-                return redirect(url_for('transfer_list'))
-
+                flash('Transferencia realizada con éxito', 'success')
+                return redirect(url_for('home'))  # Redirigimos al usuario a la página principal
             except Exception as e:
-                # Manejar errores en la base de datos
-                conn.rollback()
-                flash(f'Ocurrió un error al crear la transferencia: {str(e)}', 'danger')
-                return redirect(url_for('new_transfer'))
-
+                flash(f'Ocurrió un error al realizar la transferencia: {e}', 'danger')
+                return render_template('new_transfer.html', user_id=user_id)
         else:
-            # Si falta algún dato en el formulario
-            flash('Todos los campos son obligatorios', 'danger')
-            return redirect(url_for('new_transfer'))
-
-    # Si es una solicitud GET, renderizar el formulario
-    return render_template('new_transfer.html')
+            # Mostrar el formulario si es un GET request
+            return render_template('new_transfer.html', user_id=user_id)
+    
+    else:
+        # Si no ha iniciado sesión, redirigir a la página de login
+        flash('Por favor, inicia sesión para realizar una transferencia', 'danger')
+        return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)
