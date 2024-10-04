@@ -325,7 +325,6 @@ def new_transfer():
             exchange_rate = request.form.get('exchange_rate')  
             commission = request.form.get('commission')  
            
-
             # Validar que los campos requeridos no estén vacíos
             if not destination_account:
                 return jsonify(status='error', message='Por favor, ingrese la cuenta beneficiario')
@@ -343,6 +342,11 @@ def new_transfer():
                 return jsonify(status='error', message='Por favor, ingrese la cuenta origen')
             else:
                 try:
+                    # Convertir los valores numéricos a float
+                    amount = float(amount)
+                    exchange_rate = float(exchange_rate)
+                    commission = float(commission)
+
                     # Insertar la nueva transferencia en la base de datos
                     cursor.execute("""
                         INSERT INTO transferencias (user_id, pacto_id, destination_account, amount, destination_bank, exchange_rate, commission, origin_bank, origin_account) 
@@ -350,12 +354,13 @@ def new_transfer():
                     """, (id, None, destination_account, amount, destination_bank, exchange_rate, commission, origin_bank, origin_account))
                     
                     conn.commit()  # Confirmar los cambios
-                    cursor.close()
                     return jsonify(status='success', message='Transferencia realizada con éxito')
                 except Exception as e:
-                    cursor.close()
+                    conn.rollback()  # Revertir en caso de error
                     return jsonify(status='error', message=str(e))
-        
+                finally:
+                    cursor.close()  # Cerrar el cursor siempre
+
         else:
             # Mostrar el formulario si es un GET request
             return render_template('new_transfer.html', id=id)
