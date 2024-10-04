@@ -313,12 +313,9 @@ def new_transfer():
     if 'id' not in session:  # Verifica si el ID del usuario está en la sesión
         flash('Debes iniciar sesión para acceder a esta página.', 'danger')
         return redirect(url_for('login'))  # Redirige a la página de inicio de sesión
-    if 'id' not in session:
-        flash('Debes iniciar sesión para acceder a esta página.', 'danger')
-        return redirect(url_for('login'))
 
     if request.method == 'POST':
-        # Validar que los campos no estén vacíos
+        # Obtener datos del formulario
         origin_bank = request.form.get('origin_bank')
         destination_bank = request.form.get('destination_bank')
         origin_account = request.form.get('origin_account')
