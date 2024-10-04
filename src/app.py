@@ -20,7 +20,7 @@ conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_
 @app.route('/')
 def home():
     if 'loggedin' in session:
-        return render_template('home.html', username=session['username'])
+        return render_template('home.html', username=session['username'], user_id=session['id'])
     return redirect(url_for('login'))
 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -352,7 +352,7 @@ def new_transfer():
         # Si no ha iniciado sesión, redirigir a la página de login
         flash('Por favor, inicia sesión para realizar una transferencia', 'danger')
         return redirect(url_for('login'))
-
+    
 if __name__ == "__main__":
     app.run(debug=True)
 
