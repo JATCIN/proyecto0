@@ -382,9 +382,9 @@ def list_transferencias():
                 FROM transferencias t
                 JOIN users u ON t.user_id = u.id;
             """)
-            transferencias = cursor.fetchall()  # Obtener todos los registros
+            records = cursor.fetchall()  # Obtener todos los registros
             
-            return render_template('transferencias.html', transferencias=transferencias)
+            return render_template('list_transfers.html', records=records)
         
         except Exception as e:
             return jsonify(status='error', message=str(e))
@@ -395,7 +395,7 @@ def list_transferencias():
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para ver las transferencias')
    
-   
+
 if __name__ == "__main__":
     app.run(debug=True)
 
