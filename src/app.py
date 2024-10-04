@@ -395,7 +395,7 @@ def list_transferencias():
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para ver las transferencias')
    
-
+   
 if __name__ == "__main__":
     app.run(debug=True)
 
