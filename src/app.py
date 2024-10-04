@@ -345,7 +345,7 @@ def new_transfer():
                 try:
                     # Insertar la nueva transferencia en la base de datos
                     cursor.execute("""
-                        INSERT INTO transfers (user_id, destination_account, amount, destination_bank, exchange_rate, commission, origin_bank, origin_account) 
+                        INSERT INTO transferencias (user_id, destination_account, amount, destination_bank, exchange_rate, commission, origin_bank, origin_account) 
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                     """, (id, destination_account, amount, destination_bank, exchange_rate, commission, origin_bank, origin_account))
                     
