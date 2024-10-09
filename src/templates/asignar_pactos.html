@@ -56,8 +56,8 @@
                                 <div class="form-group">
                                     <label for="pacto_id">Pacto ID</label>
                                     <select name="pacto_id" id="pacto_id" class="form-control">
-                                        {% for pacto in pactos %}
-                                        <option value="{{ pacto.id }}">{{ pacto.id }} - {{ pacto.nombre }}</option>
+                                        {% for record in record %}
+                                        <option value="{{ pacto.id }}">{{ pacto.id }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
