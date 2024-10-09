@@ -1,3 +1,7 @@
+{% extends 'layout.html' %}
+
+{% block title %}List of Banks{% endblock %}
+
 {% block content %}
 <div class="container">
   <h2 class="mt-4">Registro de Transferencias</h2>
@@ -55,18 +59,6 @@
                 <div class="modal-body">
                   <!-- Formulario de edición -->
                   <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
-                    <div class="form-group">
-                      <label for="origin_bank">Banco de Origen</label>
-                      <input type="text" class="form-control" id="origin_bank" name="origin_bank" value="{{ record.origin_bank }}" required />
-                    </div>
-                    <div class="form-group">
-                      <label for="destination_bank">Banco de Destino</label>
-                      <input type="text" class="form-control" id="destination_bank" name="destination_bank" value="{{ record.destination_bank }}" required />
-                    </div>
-                    <div class="form-group">
-                      <label for="amount">Monto</label>
-                      <input type="number" class="form-control" id="amount" name="amount" value="{{ record.amount }}" required />
-                    </div>
                     <div class="form-group">
                       <label for="pacto_id">ID del Pacto</label>
                       <input type="number" class="form-control" id="pacto_id" name="pacto_id" value="{{ record.pacto_id }}" required />
