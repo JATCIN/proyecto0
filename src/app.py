@@ -416,9 +416,10 @@ def asignar_pactos():
         try:
             # Ejecutar la consulta para obtener las transferencias con detalles del usuario
             cursor.execute("""
-                SELECT t.*, u.fullname, u.email
-                FROM transferencias t
-                JOIN users u ON t.user_id = u.id;
+             SELECT t.*, u.fullname, u.email
+            FROM transferencias t
+            JOIN users u ON t.user_id = u.id
+            WHERE t.pacto_id IS NULL;
             """)
             records = cursor.fetchall()  # Obtener todos los registros
             
