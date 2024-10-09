@@ -41,11 +41,6 @@
         <td>{{ record.created_at }}</td>
         <td>{{ record.pacto_id }}</td>
         <td>
-          <!-- Botón para abrir el modal de edición -->
-          <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editTransferModal-{{ record.id }}">
-            <i class="fas fa-edit"></i>
-          </button>
-
           <!-- Modal para editar la transferencia -->
           <div class="modal fade" id="editTransferModal-{{ record.id }}" tabindex="-1" role="dialog" aria-labelledby="editTransferModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
