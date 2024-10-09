@@ -37,12 +37,42 @@
         <td>{{ record.commission }}</td>
         <td>{{ record.created_at }}</td>
         <td>
-            <div class="btn-group" role="group" aria-label="Editar y eliminar">
-                <form action="{{ url_for('delete_transfer', record_id=record.id) }}" method="POST" style="display:inline;">
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta transferencia?');">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#assignPactoModal{{ record.id }}">
+                Asignar Pacto
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="assignPactoModal{{ record.id }}" tabindex="-1" role="dialog" aria-labelledby="assignPactoModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="assignPactoModalLabel">Asignar Pacto a la Transferencia {{ record.id }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{{ url_for('asignar_pacto_transferencia', transfer_id=record.id) }}" method="POST">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="pacto_id">Pacto ID</label>
+                                    <select name="pacto_id" id="pacto_id" class="form-control">
+                                        {% for pacto in pactos %}
+                                        <option value="{{ pacto.id }}">{{ pacto.id }} - {{ pacto.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <p><strong>Usuario:</strong> {{ record.fullname }}</p>
+                                <p><strong>Email:</strong> {{ record.email }}</p>
+                                <p><strong>Monto:</strong> {{ record.amount }}</p>
+                                <!-- Otros detalles que quieras mostrar -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Asignar Pacto</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </td>
       </tr>

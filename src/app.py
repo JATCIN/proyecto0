@@ -409,21 +409,52 @@ def delete_transfer(record_id):
 
 @app.route('/asignar_pactos', methods=['GET'])
 def asignar_pactos():
-    # Verificamos si el usuario ha iniciado sesión
     if 'loggedin' in session:
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         try:
-            # Ejecutar la consulta para obtener las transferencias con detalles del usuario
+            # Obtener las transferencias y detalles del usuario
             cursor.execute("""
                 SELECT t.*, u.fullname, u.email
                 FROM transferencias t
                 JOIN users u ON t.user_id = u.id;
             """)
-            records = cursor.fetchall()  # Obtener todos los registros
-            
-            return render_template('asignar_pactos.html', records=records)
+            records = cursor.fetchall()
+
+            # Obtener todos los pactos
+            cursor.execute("SELECT id, nombre FROM pacto")
+            pactos = cursor.fetchall()
+
+            return render_template('asignar_pactos.html', records=records, pactos=pactos)
+
+        except Exception as e:
+            return jsonify(status='error', message=str(e))
+
+        finally:
+            cursor.close()
+
+    else:
+        return jsonify(status='error', message='Por favor, inicia sesión para ver las transferencias')
+    
+@app.route('/asignar_pacto_transferencia/<int:transfer_id>', methods=['POST'])
+def asignar_pacto_transferencia(transfer_id):
+    # Verificamos si el usuario ha iniciado sesión
+    if 'loggedin' in session:
+        pacto_id = request.form['pacto_id']
         
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        try:
+            # Actualizar la transferencia con el pacto seleccionado
+            cursor.execute("""
+                UPDATE transferencias
+                SET pacto_id = %s
+                WHERE id = %s
+            """, (pacto_id, transfer_id))
+            conn.commit()  # Confirmar los cambios en la base de datos
+
+            return redirect(url_for('asignar_pactos'))
+
         except Exception as e:
             return jsonify(status='error', message=str(e))
         
@@ -431,7 +462,7 @@ def asignar_pactos():
             cursor.close()  # Cerrar el cursor
 
     else:
-        return jsonify(status='error', message='Por favor, inicia sesión para ver las transferencias')
+        return jsonify(status='error', message='Por favor, inicia sesión para asignar un pacto')
    
 
 if __name__ == "__main__":
