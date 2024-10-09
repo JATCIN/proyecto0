@@ -1,13 +1,10 @@
-{% extends 'layout.html' %}
-
-{% block title %}Listado de Transferencias{% endblock %}
-
 {% block content %}
 <div class="container">
   <h2 class="mt-4">Registro de Transferencias</h2>
   <table class="table table-bordered">
     <thead>
       <tr>
+        <!-- Cabeceras de la tabla -->
         <th>ID transferencia</th>
         <th>Usuario</th>
         <th>Email</th>
@@ -19,13 +16,14 @@
         <th>Tipo de cambio</th>
         <th>Comisión</th>
         <th>Fecha</th>
-        <th>Id del pacto asignado</th>
+        <th>ID del pacto asignado</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
         {% for record in records %}
       <tr>
+        <!-- Datos de la transferencia -->
         <td>{{ record.id }}</td>
         <td>{{ record.fullname }}</td>
         <td>{{ record.email }}</td>
@@ -39,85 +37,53 @@
         <td>{{ record.created_at }}</td>
         <td>{{ record.pacto_id }}</td>
         <td>
-            <div class="btn-group" role="group" aria-label="Acciones">
-                <!-- Botón para abrir el modal de edición -->
-                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editTransferModal" onclick="fillEditForm({{ record|tojson }})">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <!-- Botón de eliminar -->
-                <form action="{{ url_for('delete_transfer', record_id=record.id) }}" method="POST" style="display:inline;">
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta transferencia?');">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
+          <!-- Botón para abrir el modal de edición -->
+          <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editTransferModal-{{ record.id }}">
+            <i class="fas fa-edit"></i>
+          </button>
+
+          <!-- Modal para editar la transferencia -->
+          <div class="modal fade" id="editTransferModal-{{ record.id }}" tabindex="-1" role="dialog" aria-labelledby="editTransferModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editTransferModalLabel">Editar Transferencia</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <!-- Formulario de edición -->
+                  <form action="{{ url_for('editar_transferencia', transfer_id=record.id) }}" method="POST">
+                    <div class="form-group">
+                      <label for="origin_bank">Banco de Origen</label>
+                      <input type="text" class="form-control" id="origin_bank" name="origin_bank" value="{{ record.origin_bank }}" required />
+                    </div>
+                    <div class="form-group">
+                      <label for="destination_bank">Banco de Destino</label>
+                      <input type="text" class="form-control" id="destination_bank" name="destination_bank" value="{{ record.destination_bank }}" required />
+                    </div>
+                    <div class="form-group">
+                      <label for="amount">Monto</label>
+                      <input type="number" class="form-control" id="amount" name="amount" value="{{ record.amount }}" required />
+                    </div>
+                    <div class="form-group">
+                      <label for="pacto_id">ID del Pacto</label>
+                      <input type="number" class="form-control" id="pacto_id" name="pacto_id" value="{{ record.pacto_id }}" required />
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
+          </div>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
-
-<!-- Modal para editar transferencia -->
-<div class="modal fade" id="editTransferModal" tabindex="-1" role="dialog" aria-labelledby="editTransferModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editTransferModalLabel">Editar Transferencia</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Formulario de edición -->
-        <form id="editForm" autocomplete="off">
-          <div class="form-group">
-            <label for="edit_origin_bank">Banco de Origen</label>
-            <input type="text" class="form-control" id="edit_origin_bank" name="origin_bank" required />
-          </div>
-          <!-- Agrega más campos según sea necesario -->
-          <!-- Banco destino, cuenta origen, etc... -->
-          <div class="form-group">
-            <label for="edit_amount">Monto</label>
-            <input type="number" class="form-control" id="edit_amount" name="amount" required />
-          </div>
-          <input type="hidden" id="edit_transfer_id" name="id">
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Guardar cambios</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-function fillEditForm(record) {
-  document.getElementById('edit_transfer_id').value = record.id;
-  document.getElementById('edit_origin_bank').value = record.origin_bank;
-  document.getElementById('edit_amount').value = record.amount;
-  // Completa los demás campos según sea necesario
-}
-
-document.getElementById('editForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const formData = new FormData(this);
-    fetch(`/editar_transferencia/${document.getElementById('edit_transfer_id').value}`, {
-        method: 'POST',
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            alert('Transferencia actualizada exitosamente');
-            location.reload();
-        } else {
-            alert('Error al actualizar la transferencia: ' + data.message);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-});
-</script>
 {% endblock %}

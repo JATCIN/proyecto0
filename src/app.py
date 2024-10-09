@@ -462,23 +462,34 @@ def asignar_pacto_transferencia(transfer_id):
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para asignar un pacto')
     
-@app.route('/editar_transferencia/<int:id>', methods=['POST'])
-def editar_transferencia(id):
-    # Obtener los datos enviados desde el formulario
-    origin_bank = request.form['origin_bank']
-    destination_bank = request.form['destination_bank']
-    amount = request.form['amount']
-    # Actualizar la transferencia en la base de datos
-    cursor = conn.cursor()
-    cursor.execute("""
-        UPDATE transferencias
-        SET origin_bank = %s, destination_bank = %s, amount = %s
-        WHERE id = %s
-    """, (origin_bank, destination_bank, amount, id))
-    conn.commit()
-    cursor.close()
+@app.route('/editar_pacto/<int:transfer_id>', methods=['POST'])
+def editar_pacto(record_id):
+    if 'loggedin' in session:
+        pacto_id = request.form['pacto_id']  # Obtén el pacto_id del formulario enviado
 
-    return jsonify(status='success')
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    
+        try:
+            # Actualizar la transferencia con el pacto seleccionado
+            cursor.execute("""
+                UPDATE transferencias
+                SET pacto_id = %s
+                WHERE id = %s
+            """, (pacto_id, record_id))  # transfer_id viene de la URL y pacto_id del formulario
+            
+            conn.commit()  # Confirmar los cambios en la base de datos
+
+            # Redirigir nuevamente a la página de asignación de pactos
+            return redirect(url_for('asignar_pactos'))
+
+        except Exception as e:
+            return jsonify(status='error', message=str(e))
+
+        finally:
+            cursor.close()  # Cerrar el cursor
+
+    else:
+        return jsonify(status='error', message='Por favor, inicia sesión para asignar un pacto')
    
 
 if __name__ == "__main__":
