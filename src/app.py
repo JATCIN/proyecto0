@@ -409,29 +409,26 @@ def delete_transfer(record_id):
 
 @app.route('/asignar_pactos', methods=['GET'])
 def asignar_pactos():
+    # Verificamos si el usuario ha iniciado sesión
     if 'loggedin' in session:
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         try:
-            # Obtener las transferencias y detalles del usuario
+            # Ejecutar la consulta para obtener las transferencias con detalles del usuario
             cursor.execute("""
                 SELECT t.*, u.fullname, u.email
                 FROM transferencias t
                 JOIN users u ON t.user_id = u.id;
             """)
-            records = cursor.fetchall()
-
-            # Obtener todos los pactos
-            cursor.execute("SELECT id")
-            records = cursor.fetchall()
-
+            records = cursor.fetchall()  # Obtener todos los registros
+            
             return render_template('asignar_pactos.html', records=records)
-
+        
         except Exception as e:
             return jsonify(status='error', message=str(e))
-
+        
         finally:
-            cursor.close()
+            cursor.close()  # Cerrar el cursor
 
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para ver las transferencias')
