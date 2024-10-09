@@ -54,7 +54,7 @@
                 </div>
                 <div class="modal-body">
                   <!-- Formulario de edición -->
-                  <form action="{{ url_for('editar_transferencia', transfer_id=record.id) }}" method="POST">
+                  <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
                     <div class="form-group">
                       <label for="origin_bank">Banco de Origen</label>
                       <input type="text" class="form-control" id="origin_bank" name="origin_bank" value="{{ record.origin_bank }}" required />
