@@ -434,36 +434,8 @@ def asignar_pactos():
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para ver las transferencias')
     
-@app.route('/asignar_pacto_transferencia/<int:transfer_id>', methods=['POST'])
-def asignar_pacto_transferencia(transfer_id):
-    # Verificamos si el usuario ha iniciado sesión
-    if 'loggedin' in session:
-        pacto_id = request.form['pacto_id']
-        
-        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-        try:
-            # Actualizar la transferencia con el pacto seleccionado
-            cursor.execute("""
-                UPDATE transferencias
-                SET pacto_id = %s
-                WHERE id = %s
-            """, (pacto_id, transfer_id))
-            conn.commit()  # Confirmar los cambios en la base de datos
-
-            return redirect(url_for('asignar_pactos'))
-
-        except Exception as e:
-            return jsonify(status='error', message=str(e))
-        
-        finally:
-            cursor.close()  # Cerrar el cursor
-
-    else:
-        return jsonify(status='error', message='Por favor, inicia sesión para asignar un pacto')
-    
-@app.route('/editar_pacto/<int:transfer_id>', methods=['POST'])
-def editar_pacto(record_id):
+@app.route('/editar_transferencias/<int:record_id>', methods=['POST'])
+def editar_transferencias(record_id):
     if 'loggedin' in session:
         pacto_id = request.form['pacto_id']  # Obtén el pacto_id del formulario enviado
 
