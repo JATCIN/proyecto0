@@ -461,6 +461,24 @@ def asignar_pacto_transferencia(transfer_id):
 
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para asignar un pacto')
+    
+@app.route('/editar_transferencia/<int:id>', methods=['POST'])
+def editar_transferencia(id):
+    # Obtener los datos enviados desde el formulario
+    origin_bank = request.form['origin_bank']
+    destination_bank = request.form['destination_bank']
+    amount = request.form['amount']
+    # Actualizar la transferencia en la base de datos
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE transferencias
+        SET origin_bank = %s, destination_bank = %s, amount = %s
+        WHERE id = %s
+    """, (origin_bank, destination_bank, amount, id))
+    conn.commit()
+    cursor.close()
+
+    return jsonify(status='success')
    
 
 if __name__ == "__main__":
