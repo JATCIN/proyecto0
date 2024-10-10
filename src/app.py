@@ -422,10 +422,10 @@ def asignar_pactos():
             """)           
             records = cursor.fetchall()  # Obtener todos los registros
 
-            cursor.execute('SELECT * FROM pacto')
-            records = cursor.fetchall()
+            cursor.execute('SELECT * FROM pacto;')  # Consulta para obtener los pactos
+            pactos = cursor.fetchall()
             
-            return render_template('asignar_pactos.html', records=records)
+            return render_template('asignar_pactos.html', records=records, pactos=pactos)
         
         except Exception as e:
             return jsonify(status='error', message=str(e))

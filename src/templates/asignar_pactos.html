@@ -49,9 +49,9 @@
               <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
               <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
                 <option value="">Seleccionar Pacto</option>
-                {% for record in records %}  <!-- Itera sobre los pactos, no sobre records -->
-                  <option value="{{ record.id_pacto }}" {% if record.id_pacto == record.pacto_id %}selected{% endif %}>
-                    {{ record.id_pacto }}  <!-- Aquí se muestra el ID del pacto -->
+                {% for pacto in pactos %}  <!-- Itera sobre los pactos, no sobre records -->
+                  <option value="{{ pacto.id_pacto }}" {% if pacto.id_pacto == record.pacto_id %}selected{% endif %}>
+                    {{ pacto.id_pacto }}  <!-- Aquí se muestra el ID del pacto -->
                   </option>
                 {% endfor %}
               </select>
