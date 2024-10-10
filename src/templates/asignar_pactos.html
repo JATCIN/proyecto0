@@ -5,8 +5,8 @@
 {% block content %}
 <div class="container">
   <h2 class="mt-4">Registro de Transferencias</h2>
-  <!-- Aplicamos la clase "right-align" para mover la tabla a la derecha -->
-  <div class="table-responsive right-align">
+  <!-- Añadimos la clase "ms-auto" para empujar la tabla a la derecha -->
+  <div class="table-responsive ms-auto me-5">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -66,3 +66,10 @@
   </div>
 </div>
 {% endblock %}
+<style>
+  .right-align {
+    margin-left: auto;
+    margin-right: 0; /* Mueve la tabla hacia la derecha */
+    width: 80%; /* Ajusta el ancho si lo prefieres */
+  }
+</style>
