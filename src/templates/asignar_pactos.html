@@ -3,77 +3,52 @@
 {% block title %}List of Banks{% endblock %}
 
 {% block content %}
-<div class="container">
-  <h2 class="mt-4">Registro de Transferencias</h2>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-        <!-- Cabeceras de la tabla -->
-        <th>ID transferencia</th>
-        <th>Usuario</th>
-        <th>Email</th>
-        <th>Banco origen</th>
-        <th>Cuenta origen</th>
-        <th>Banco destino</th>
-        <th>Cuenta destino</th>
-        <th>Monto</th>
-        <th>Tipo de cambio</th>
-        <th>Comisión</th>
-        <th>Fecha</th>
-        <th>ID del pacto asignado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
+<div class="container mt-5">
+  <h2 class="text-center">Registro de Transferencias</h2>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>ID transferencia</th>
+          <th>Usuario</th>
+          <th>Banco origen</th>
+          <th>Cuenta origen</th>
+          <th>Banco destino</th>
+          <th>Cuenta destino</th>
+          <th>Monto</th>
+          <th>Tipo de cambio</th>
+          <th>Comisión</th>
+          <th>Fecha</th>
+          <th>ID del pacto asignado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
         {% for record in records %}
-      <tr>
-        <!-- Datos de la transferencia -->
-        <td>{{ record.id }}</td>
-        <td>{{ record.fullname }}</td>
-        <td>{{ record.email }}</td>
-        <td>{{ record.origin_bank }}</td>
-        <td>{{ record.origin_account }}</td>
-        <td>{{ record.destination_bank }}</td>
-        <td>{{ record.destination_account }}</td>
-        <td>{{ record.amount }}</td>
-        <td>{{ record.exchange_rate }}</td>
-        <td>{{ record.commission }}</td>
-        <td>{{ record.created_at }}</td>
-        <td>{{ record.pacto_id }}</td>
-        <td>
-          <!-- Modal para editar la transferencia -->
-          <div class="modal fade" id="editTransferModal-{{ record.id }}" tabindex="-1" role="dialog" aria-labelledby="editTransferModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="editTransferModalLabel">Editar Transferencia</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <!-- Formulario de edición -->
-                  <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
-                    <div class="form-group">
-                      <label for="pacto_id">ID del Pacto</label>
-                      
-                      <!-- Desplegable para mostrar los IDs de los pactos -->
-                      <select class="form-control" id="pactoSelect" name="pacto_id" required>
-                        <option value="">Seleccionar Pacto</option>
-                        {% for pacto in pactos %}
-                          <option value="{{ pacto.id }}">{{ pacto.id }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                      <button type="submit" class="btn btn-primary">Guardar cambios</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
+        <tr>
+          <td>{{ record.id }}</td>
+          <td>{{ record.user.email }}</td>
+          <td>{{ record.banco_origen }}</td>
+          <td>{{ record.cuenta_origen }}</td>
+          <td>{{ record.banco_destino }}</td>
+          <td>{{ record.cuenta_destino }}</td>
+          <td>{{ record.monto }}</td>
+          <td>{{ record.tipo_cambio }}</td>
+          <td>{{ record.comision }}</td>
+          <td>{{ record.fecha }}</td>
+          <td>{{ record.pacto_id or 'None' }}</td>
+          <td>
+            <!-- Botón para abrir el modal de editar -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editTransferModal-{{ record.id }}">
+              Editar
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
         </td>
       </tr>
       {% endfor %}
