@@ -56,7 +56,14 @@
                   <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
                     <div class="form-group">
                       <label for="pacto_id">ID del Pacto</label>
-                      <input type="number" class="form-control" id="pacto_id" name="pacto_id" value="{{ record.pacto_id }}" required />
+                      
+                      <!-- Desplegable para mostrar los IDs de los pactos -->
+                      <select class="form-control" id="pactoSelect" name="pacto_id" required>
+                        <option value="">Seleccionar Pacto</option>
+                        {% for pacto in pactos %}
+                          <option value="{{ pacto.id }}">{{ pacto.id }}</option>
+                        {% endfor %}
+                      </select>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
