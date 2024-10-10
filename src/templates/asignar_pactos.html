@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for record in transferencias %}
+      {% for record in records %}
       <tr>
         <!-- Datos de la transferencia -->
         <td>{{ record.id }}</td>
@@ -49,7 +49,7 @@
               <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
               <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
                 <option value="">Seleccionar Pacto</option>
-                {% for pacto in pactos %}  <!-- Itera sobre 'pactos' -->
+                {% for record in records %}  <!-- Itera sobre 'pactos' -->
                   <option value="{{ pacto.id_pacto }}" {% if pacto.id_pacto == record.pacto_id %}selected{% endif %}>  <!-- Compara correctamente -->
                     {{ pacto.id_pacto }}  <!-- Aquí se muestra el ID del pacto -->
                   </option>

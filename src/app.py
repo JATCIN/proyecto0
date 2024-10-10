@@ -381,12 +381,12 @@ def list_transferencias():
                 FROM transferencias t
                 JOIN users u ON t.user_id = u.id;
             """)
-            transferencias = cursor.fetchall()  # Guardamos las transferencias en 'transferencias'
+            records = cursor.fetchall()  # Guardamos las transferencias en 'transferencias'
 
             cursor.execute('SELECT * FROM pacto;')  # Asegúrate de que la tabla 'pacto' tenga datos
-            pactos = cursor.fetchall()  # Guardamos los pactos en 'pactos'
+            records = cursor.fetchall()  # Guardamos los pactos en 'pactos'
             
-            return render_template('list_transfers.html', transferencias=transferencias, pactos=pactos)
+            return render_template('list_transfers.html', records=records)
         
         except Exception as e:
             return jsonify(status='error', message=str(e))
