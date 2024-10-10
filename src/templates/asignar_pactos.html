@@ -51,7 +51,7 @@
                 <option value="">Seleccionar Pacto</option>
                 {% for record in records %}  <!-- Itera sobre 'pactos' -->
                 <option value="{{ record.id_pacto }}" {% if record.id_pacto == record.pacto_id %}selected{% endif %}> 
-                    {{ record.id_pacto }}  <!-- Aquí se muestra el ID del pacto -->
+                    {{ record.id }}  <!-- Aquí se muestra el ID del pacto -->
                   </option>
                 {% endfor %}
               </select>
