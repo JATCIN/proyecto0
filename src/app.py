@@ -376,13 +376,15 @@ def list_transferencias():
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
         try:
-            # Ejecutar la consulta para obtener las transferencias con detalles del usuario
             cursor.execute("""
                 SELECT t.*, u.fullname, u.email
                 FROM transferencias t
                 JOIN users u ON t.user_id = u.id;
             """)
-            records = cursor.fetchall()  # Obtener todos los registros
+            records = cursor.fetchall()  
+
+            cursor.execute('SELECT * FROM pacto')
+            records = cursor.fetchall()
             
             return render_template('list_transfers.html', records=records)
         
@@ -462,6 +464,8 @@ def editar_transferencia(record_id):
 
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para asignar un pacto')
+    
+
    
 
 if __name__ == "__main__":
