@@ -5,71 +5,63 @@
 {% block content %}
 <div class="container">
   <h2 class="mt-4">Registro de Transferencias</h2>
-  <!-- Añadimos la clase "ms-auto" para empujar la tabla a la derecha -->
-  <div class="table-responsive ms-auto me-5">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <!-- Cabeceras de la tabla -->
-          <th>ID transferencia</th>
-          <th>Usuario</th>
-          <th>Email</th>
-          <th>Banco origen</th>
-          <th>Cuenta origen</th>
-          <th>Banco destino</th>
-          <th>Cuenta destino</th>
-          <th>Monto</th>
-          <th>Tipo de cambio</th>
-          <th>Comisión</th>
-          <th>Fecha</th>
-          <th>ID del pacto asignado</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for record in records %}
-        <tr>
-          <!-- Datos de la transferencia -->
-          <td>{{ record.id }}</td>
-          <td>{{ record.fullname }}</td>
-          <td>{{ record.email }}</td>
-          <td>{{ record.origin_bank }}</td>
-          <td>{{ record.origin_account }}</td>
-          <td>{{ record.destination_bank }}</td>
-          <td>{{ record.destination_account }}</td>
-          <td>{{ record.amount }}</td>
-          <td>{{ record.exchange_rate }}</td>
-          <td>{{ record.commission }}</td>
-          <td>{{ record.created_at }}</td>
-          <td>{{ record.pacto_id }}</td>
-          <td>
-            <!-- Select para editar ID del pacto -->
-            <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
-              <div class="form-group">
-                <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
-                <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
-                  <option value="">Seleccionar Pacto</option>
-                  {% for pacto in pactos %}
-                  <option value="{{ pacto.id }}" {% if pacto.id == record.pacto_id %}selected{% endif %}>
-                    {{ pacto.id }}
-                  </option>
-                  {% endfor %}
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
-            </form>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+  
+  <!-- Eliminamos la clase table-responsive para que la tabla no tenga scroll -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <!-- Cabeceras de la tabla -->
+        <th>ID transferencia</th>
+        <th>Usuario</th>
+        <th>Email</th>
+        <th>Banco origen</th>
+        <th>Cuenta origen</th>
+        <th>Banco destino</th>
+        <th>Cuenta destino</th>
+        <th>Monto</th>
+        <th>Tipo de cambio</th>
+        <th>Comisión</th>
+        <th>Fecha</th>
+        <th>ID del pacto asignado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in records %}
+      <tr>
+        <!-- Datos de la transferencia -->
+        <td>{{ record.id }}</td>
+        <td>{{ record.fullname }}</td>
+        <td>{{ record.email }}</td>
+        <td>{{ record.origin_bank }}</td>
+        <td>{{ record.origin_account }}</td>
+        <td>{{ record.destination_bank }}</td>
+        <td>{{ record.destination_account }}</td>
+        <td>{{ record.amount }}</td>
+        <td>{{ record.exchange_rate }}</td>
+        <td>{{ record.commission }}</td>
+        <td>{{ record.created_at }}</td>
+        <td>{{ record.pacto_id }}</td>
+        <td>
+          <!-- Select para editar ID del pacto -->
+          <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
+            <div class="form-group">
+              <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
+              <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
+                <option value="">Seleccionar Pacto</option>
+                {% for pacto in pactos %}
+                <option value="{{ pacto.id }}" {% if pacto.id == record.pacto_id %}selected{% endif %}>
+                  {{ pacto.id }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
-<style>
-  .right-align {
-    margin-left: auto;
-    margin-right: 0; /* Mueve la tabla hacia la derecha */
-    width: 80%; /* Ajusta el ancho si lo prefieres */
-  }
-</style>
