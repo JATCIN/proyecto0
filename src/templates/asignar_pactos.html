@@ -46,19 +46,19 @@
           <!-- Select para editar ID del pacto -->
          <!-- Select para editar ID del pacto -->
          <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
-          <div class="form-group">
-            <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
-            <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
-              <option value="">Seleccionar Pacto</option>
-              {% for pecord in records %}  <!-- Usa pactos aquí -->
-              <option value="{{ record.id }}" {% if record.id == record.pacto_id %}selected{% endif %}>  <!-- Cambia = a == -->
-                {{ record.id }}  <!-- Aquí se muestra el ID del pacto -->
-              </option>
-              {% endfor %}
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
-        </form>
+  <div class="form-group">
+    <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
+    <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
+      <option value="">Seleccionar Pacto</option>
+      {% for pacto in pactos %}  <!-- Usa pactos aquí -->
+      <option value="{{ pacto.id }}" {% if pacto.id == record.pacto_id %}selected{% endif %}>  <!-- Cambia = a == -->
+        {{ pacto.id }}  <!-- Aquí se muestra el ID del pacto -->
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
+</form>
         </td>
       </tr>
       {% endfor %}

@@ -384,9 +384,9 @@ def list_transferencias():
             records = cursor.fetchall()  
 
             cursor.execute('SELECT * FROM pacto')
-            records = cursor.fetchall()
+            pactos = cursor.fetchall()
             
-            return render_template('list_transfers.html', records=records)
+            return render_template('list_transfers.html', records=records, pactos=pactos)
         
         except Exception as e:
             return jsonify(status='error', message=str(e))
