@@ -47,7 +47,7 @@
           <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
             <div class="form-group">
               <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
-              <select class="form-control" id="pactoSelect-{{ record.id_pacto }}" name="pacto_id" required>
+              <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
                 <option value="">Seleccionar Pacto</option>
                 {% for record in records %}  <!-- Itera sobre 'pactos' -->
                   <option value="{{ record.id_pacto }}" {% if record.id_pacto == record.pacto_id %}selected{% endif %}>  <!-- Compara correctamente -->
