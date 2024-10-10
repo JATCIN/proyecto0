@@ -419,8 +419,11 @@ def asignar_pactos():
             FROM transferencias t
             JOIN users u ON t.user_id = u.id
             WHERE t.pacto_id IS NULL;
-            """)
+            """)           
             records = cursor.fetchall()  # Obtener todos los registros
+
+            cursor.execute('SELECT * FROM pacto')
+            records = cursor.fetchall()
             
             return render_template('asignar_pactos.html', records=records)
         
