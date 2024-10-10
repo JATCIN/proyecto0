@@ -36,7 +36,7 @@
         <td>{{ record.fecha_hora }}</td>
         <td>
             <div class="btn-group" role="group" aria-label="Editar y eliminar">
-                <form action="{{ url_for('delete_pacto', record_id=record.id) }}" method="POST" style="display:inline;">
+                <form action="{{ url_for('delete_pacto', record_id=record.id_pacto) }}" method="POST" style="display:inline;">
                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
                         <i class="fas fa-trash-alt"></i>
                     </button>

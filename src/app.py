@@ -292,7 +292,7 @@ def list_pactos():
 def delete_pacto(record_id):
     try:
         cursor = conn.cursor()
-        cursor.execute('DELETE FROM pacto WHERE id = %s', (record_id,))
+        cursor.execute('DELETE FROM pacto WHERE id_pacto = %s', (record_id,))
         conn.commit()
         cursor.close()
         flash('Pacto eliminado correctamente.', 'success')
