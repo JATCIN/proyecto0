@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for record in records %}
+      {% for record in transferencias %}
       <tr>
         <!-- Datos de la transferencia -->
         <td>{{ record.id }}</td>
@@ -44,21 +44,20 @@
         <td>{{ record.pacto_id }}</td>
         <td>
           <!-- Select para editar ID del pacto -->
-         <!-- Select para editar ID del pacto -->
-         <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
-          <div class="form-group">
-            <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
-            <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
-              <option value="">Seleccionar Pacto</option>
-              {% for record in records %}  <!-- Usa pactos aquí -->
-              <option value="{{ record.id }}" {% if record.id == record.pacto_id %}selected{% endif %}>  <!-- Cambia = a == -->
-                {{ record.id }}  <!-- Aquí se muestra el ID del pacto -->
-              </option>
-              {% endfor %}
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
-        </form>
+          <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
+            <div class="form-group">
+              <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
+              <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
+                <option value="">Seleccionar Pacto</option>
+                {% for pacto in pactos %}  <!-- Itera sobre 'pactos' -->
+                  <option value="{{ pacto.id }}" {% if pacto.id == record.pacto_id %}selected{% endif %}>  <!-- Compara correctamente -->
+                    {{ pacto.id }}  <!-- Aquí se muestra el ID del pacto -->
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
+          </form>
         </td>
       </tr>
       {% endfor %}
