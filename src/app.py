@@ -221,7 +221,11 @@ def delete_casa_de_bolsa(record_id):
 @app.route('/list_users')
 def list_users():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT * FROM users')
+    cursor.execute("""
+    SELECT users.*, transferencias.id AS transferencia_id
+    FROM users
+    LEFT JOIN transferencias ON users.id = transferencias.user_id
+    """)
     records = cursor.fetchall()
     return render_template('list_users.html', records=records)
 
@@ -612,6 +616,67 @@ def export_pdf_pactos():
             cursor.close()  # Cerrar el cursor
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para exportar los pactos')
+    
+    #PDF PARA USUARIOS 
+@app.route('/export_pdf_usuarios', methods=['GET'])
+def export_pdf_usuarios():
+    # Verificamos si el usuario ha iniciado sesión
+    if 'loggedin' in session:
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        try:
+            cursor.execute("""
+                SELECT users.*, transferencias.id AS transferencia_id
+                FROM users
+                LEFT JOIN transferencias ON users.id = transferencias.user_id
+            """)
+            records = cursor.fetchall()  # Guardamos las transferencias en 'records'
+
+            # Crear un PDF con los resultados en orientación horizontal
+            pdf = FPDF(orientation='P', unit='mm', format='A4')  # Cambiar a 'L' para horizontal
+            pdf.add_page()
+
+            # Configurar el título y encabezado
+            pdf.set_font('Arial', 'B', 16)
+            pdf.cell(200, 10, txt="Reporte Usuarios", ln=True, align='C')
+
+            # Agregar una tabla con los datos
+            pdf.set_font('Arial', 'B', 8)
+            pdf.cell(28, 10, "ID usuario", 1)
+            pdf.cell(28, 10, "Name", 1)
+            pdf.cell(28, 10, "Email", 1)
+            pdf.cell(28, 10, "Username", 1)
+            pdf.cell(28, 10, "Fecha", 1)
+            pdf.cell(28, 10, "Id transferencias asiganadas", 1)
+            pdf.ln()
+
+            # Agregar datos al PDF
+            pdf.set_font('Arial', '', 8)
+            for row in records:
+                pdf.cell(28, 10, str(row['id']), 1)
+                pdf.cell(28, 10, row['fullname'], 1)
+                pdf.cell(28, 10, row['email'], 1)
+                pdf.cell(28, 10, str(row['username']), 1)
+                pdf.cell(28, 10, row['created_at'].strftime("%Y-%m-%d"), 1)
+                pdf.cell(28, 10, str(row['transferencia_id']), 1)
+                
+                pdf.ln()
+
+            # Guardar el PDF en un archivo temporal
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+                pdf.output(temp_file.name)
+                temp_file.seek(0)
+                temp_file_name = temp_file.name
+
+            return send_file(temp_file_name, as_attachment=True, download_name='Usuarios.pdf', mimetype='application/pdf')
+        
+        except Exception as e:
+            return jsonify(status='error', message=str(e))
+        
+        finally:
+            cursor.close()  # Cerrar el cursor
+    else:
+        return jsonify(status='error', message='Por favor, inicia sesión para exportar los usuarios')
     
 
    
