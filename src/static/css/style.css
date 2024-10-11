@@ -123,13 +123,17 @@ body {
   color:#fff;
   }
   .sidebar {
-   position: sticky; /* Hace que el elemento permanezca en su lugar cuando se desplaza */
-   top: 0; /* Establece la posición superior cuando el usuario se desplaza */
-   height: 100vh; /* Asegúrate de que el sidebar tenga la altura completa de la ventana */
-   overflow-y: auto; /* Permite el desplazamiento vertical si el contenido es más grande que el área visible */
+   position: fixed; /* Mantiene el sidebar fijo en la pantalla */
+   top: 0; /* Fija la parte superior */
+   left: 0; /* Fija la parte izquierda */
+   width: 250px; /* Ancho del sidebar */
+   height: 100vh; /* Altura completa de la ventana */
+   overflow-y: auto; /* Permite el desplazamiento si es necesario */
+   background-color: #f8f9fa; /* Color de fondo */
+   z-index: 1000; /* Asegura que esté en la parte superior de otros elementos */
 }
 
-.sidebar-sticky {
-   position: sticky;
-   top: 0;
+.main-content {
+   margin-left: 250px; /* Margen izquierdo para no superponerse con el sidebar */
+   padding: 20px; /* Espaciado interno */
 }
