@@ -1,10 +1,10 @@
 {% extends 'layout.html' %}
 
-{% block title %}Listar transferencias{% endblock %}
+{% block title %}Listar pactos{% endblock %}
 
 {% block content %}
 <div class="container">
-  <h2 class="mt-4 text-center">Registro de Transferencias</h2>
+  <h2 class="mt-4 text-center">Registro de Pactos</h2>
 
   <!-- Tabla con desplazamiento a la izquierda -->
   <table class="table table-dark" style="transform: translateX(-170px);">
@@ -12,37 +12,32 @@
     <thead>
       <tr>
         <!-- Cabeceras de la tabla -->
-        <th>ID transferencia</th>
-        <th>Usuario</th>
-        <th>Email</th>
+        <th>ID</th>
         <th>Banco origen</th>
-        <th>Cuenta origen</th>
         <th>Banco destino</th>
-        <th>Cuenta destino</th>
         <th>Monto</th>
+        <th>Cuenta origen</th>
+        <th>Cuenta destino</th>
         <th>Tipo de cambio</th>
-        <th>Comisión</th>
+        <th>Comision</th>
+        <th>Status</th>
         <th>Fecha</th>
-        <th>ID del pacto asignado</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       {% for record in records %}
       <tr>
-        <!-- Datos de la transferencia -->
-        <td>{{ record.id }}</td>
-        <td>{{ record.fullname }}</td>
-        <td>{{ record.email }}</td>
-        <td>{{ record.origin_bank }}</td>
-        <td>{{ record.origin_account }}</td>
-        <td>{{ record.destination_bank }}</td>
-        <td>{{ record.destination_account }}</td>
-        <td>{{ record.amount }}</td>
-        <td>{{ record.exchange_rate }}</td>
-        <td>{{ record.commission }}</td>
-        <td>{{ record.created_at }}</td>
-        <td>{{ record.pacto_id }}</td>
+        <td>{{ record.id_pacto }}</td>
+        <td>{{ record.banco_origen }}</td>
+        <td>{{ record.banco_destino }}</td>
+        <td>{{ record.monto }}</td>
+        <td>{{ record.cuenta_origen }}</td>
+        <td>{{ record.cuenta_destino }}</td>
+        <td>{{ record.tipo_cambio }}</td>
+        <td>{{ record.comision }}</td>
+        <td>{{ record.status }}</td>
+        <td>{{ record.fecha_hora }}</td>
         <td>
           <!-- Select para editar ID del pacto -->
           <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">

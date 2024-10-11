@@ -297,7 +297,7 @@ def pacto():
 @app.route('/list_pactos')
 def list_pactos():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT * FROM pacto ORDER BY fecha_hora ASC;')
+    cursor.execute('SELECT * FROM pacto ORDER BY fecha_hora ASC')
     records = cursor.fetchall()
     return render_template('list_pactos.html', records=records)
     
@@ -483,6 +483,60 @@ def editar_transferencia(record_id):
 
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para asignar un pacto')
+    
+@app.route('/asignar_status', methods=['GET'])
+def asignar_status():
+    # Verificamos si el usuario ha iniciado sesión
+    if 'loggedin' in session:
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        try:
+            # Ejecutar la consulta para obtener las transferencias con detalles del usuario
+            cursor.execute("""
+             SELECT * FROM pacto ORDER BY fecha_hora ASC
+            """)           
+            records = cursor.fetchall()  # Obtener todos los registros
+
+            
+            return render_template('asignar_status.html', records=records)
+        
+        except Exception as e:
+            return jsonify(status='error', message=str(e))
+        
+        finally:
+            cursor.close()  # Cerrar el cursor
+
+    else:
+        return jsonify(status='error', message='Por favor, inicia sesión para ver los Pactos')
+    
+@app.route('/editar_pactos/<int:record_id>', methods=['POST'])
+def editar_pactos(record_id):
+    if 'loggedin' in session:
+        status = request.form['status']  
+
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    
+        try:
+            # Actualizar la transferencia con el pacto seleccionado
+            cursor.execute("""
+                UPDATE pacto
+                SET status = %s
+                WHERE id = %s
+            """, (status, record_id))  # transfer_id viene de la URL y pacto_id del formulario
+            
+            conn.commit()  # Confirmar los cambios en la base de datos
+
+            # Redirigir nuevamente a la página de asignación de pactos
+            return redirect(url_for('asignar_status'))
+
+        except Exception as e:
+            return jsonify(status='error', message=str(e))
+
+        finally:
+            cursor.close()  # Cerrar el cursor
+
+    else:
+        return jsonify(status='error', message='Por favor, inicia sesión para asignar un status')
     
      #PDF PARA TRANSFERENCIAS 
 @app.route('/export-pdf', methods=['GET'])
