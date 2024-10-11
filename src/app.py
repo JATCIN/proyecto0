@@ -521,7 +521,7 @@ def editar_pactos(record_id):
             cursor.execute("""
                 UPDATE pacto
                 SET status = %s
-                WHERE id = %s
+                WHERE id_pacto = %s
             """, (status, record_id))  # transfer_id viene de la URL y pacto_id del formulario
             
             conn.commit()  # Confirmar los cambios en la base de datos
