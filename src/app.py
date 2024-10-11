@@ -521,7 +521,7 @@ def export_pdf():
 
             # Guardar el PDF en un buffer de memoria y enviarlo como respuesta
             buffer = io.BytesIO()
-            pdf.output(buffer)
+            pdf.output(buffer, 'F')  # Cambia esto para que funcione correctamente
             buffer.seek(0)
 
             return send_file(buffer, as_attachment=True, download_name='transferencias.pdf', mimetype='application/pdf')
