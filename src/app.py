@@ -498,8 +498,8 @@ def export_pdf():
             pdf.cell(200, 10, txt="Reporte Transferencias", ln=True, align='C')
 
             # Agregar una tabla con los datos
-            pdf.set_font('Arial', 'B', 10)
-            pdf.cell(20, 10, "ID Transferencia", 1)
+            pdf.set_font('Arial', 'B', 7)
+            pdf.cell(30, 10, "ID Transferencia", 1)
             pdf.cell(30, 10, "Usuario", 1)
             pdf.cell(40, 10, "Email", 1)
             pdf.cell(30, 10, "Banco Origen", 1)
@@ -514,7 +514,7 @@ def export_pdf():
             pdf.ln()
 
             # Agregar datos al PDF
-            pdf.set_font('Arial', '', 10)
+            pdf.set_font('Arial', '', 6)
             for row in records:
                 pdf.cell(20, 10, str(row['id']), 1)
                 pdf.cell(30, 10, row['fullname'], 1)
