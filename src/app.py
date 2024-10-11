@@ -489,8 +489,8 @@ def export_pdf():
             """)
             records = cursor.fetchall()  # Guardamos las transferencias en 'records'
 
-            # Crear un PDF con los resultados
-            pdf = FPDF(orientation='P', unit='mm', format='A4')  # Orientación vertical
+            # Crear un PDF con los resultados en orientación horizontal
+            pdf = FPDF(orientation='L', unit='mm', format='A4')  # Cambiar a 'L' para horizontal
             pdf.add_page()
 
             # Configurar el título y encabezado
