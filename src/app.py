@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, session, redirect, url_for, render_template, flash, send_file
 from fpdf import FPDF
 import io
+import tempfile
 import psycopg2
 import psycopg2.extras
 import re
@@ -519,12 +520,13 @@ def export_pdf():
                 pdf.cell(30, 10, row['created_at'].strftime("%Y-%m-%d"), 1)
                 pdf.ln()
 
-            # Guardar el PDF en un buffer de memoria y enviarlo como respuesta
-            buffer = io.BytesIO()
-            pdf.output(buffer, 'F')  # Cambia esto para que funcione correctamente
-            buffer.seek(0)
+            # Guardar el PDF en un archivo temporal
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+                pdf.output(temp_file.name)
+                temp_file.seek(0)
+                temp_file_name = temp_file.name
 
-            return send_file(buffer, as_attachment=True, download_name='transferencias.pdf', mimetype='application/pdf')
+            return send_file(temp_file_name, as_attachment=True, download_name='transferencias.pdf', mimetype='application/pdf')
         
         except Exception as e:
             return jsonify(status='error', message=str(e))
