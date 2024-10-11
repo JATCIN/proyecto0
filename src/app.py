@@ -524,7 +524,9 @@ def editar_pactos(record_id):
                 WHERE id_pacto = %s
             """, (status, record_id))  # transfer_id viene de la URL y pacto_id del formulario
             
-            conn.commit()  # Confirmar los cambios en la base de datos
+            conn.commit()  
+
+            flash('Status cambiado exitosamente', 'success')
 
             # Redirigir nuevamente a la página de asignación de pactos
             return redirect(url_for('asignar_status'))
