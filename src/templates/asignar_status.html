@@ -53,16 +53,16 @@
           <!-- Select para editar ID del pacto -->
           <form action="{{ url_for('editar_pactos', record_id=record.id_pacto) }}" method="POST">
             <div class="form-group">
-              <label for="status-{{ record.id_pacto }}">Seleccionar nuevo estado del Pacto:</label>
-              <select class="form-control" id="statusSelect-{{ record.id_pacto }}" name="status" required>
-                <option value="">Seleccionar Status</option>
-                <option value="EN PROGRESO" {% if record.status == 'EN PROGRESO' %}selected{% endif %}>EN PROGRESO</option>
-                <option value="RECHAZADO" {% if record.status == 'RECHAZADO' %}selected{% endif %}>RECHAZADO</option>
-                <option value="PAGADO" {% if record.status == 'PAGADO' %}selected{% endif %}>PAGADO</option>
-              </select>
+                <label for="status-{{ record.id_pacto }}">Seleccionar nuevo estado del Pacto:</label>
+                <select class="form-control" id="statusSelect-{{ record.id_pacto }}" name="status" required>
+                    <option value="">Seleccionar Status</option>
+                    <option value="EN PROGRESO" {% if record.status == 'EN PROCESO' and not (status is not none) %}selected{% endif %}>EN PROGRESO</option>
+                    <option value="RECHAZADO" {% if record.status == 'RECHAZADO' and not (status is not none) %}selected{% endif %}>RECHAZADO</option>
+                    <option value="PAGADO" {% if record.status == 'PAGADO' and not (status is not none) %}selected{% endif %}>PAGADO</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
-          </form>
+        </form>
         </td>
       </tr>
       {% endfor %}
