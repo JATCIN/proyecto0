@@ -4,25 +4,13 @@
 
 {% block content %}
 <div class="container">
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      <div class="alert-container">
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} mt-3">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  {% endwith %}
   <h2 class="mt-4 text-center">Registro de Pactos</h2>
 
-  <!-- Tabla con desplazamiento a la izquierda -->
-  <table class="table table-dark" style="transform: translateX(-10px);">
+  <!-- Contenedor para la tabla con scroll -->
+  <div style="max-height: 400px; overflow-y: auto;">
+    <table class="table table-dark" style="transform: translateX(-10px);">
       <thead class="table-dark">
-    <thead>
       <tr>
-        <!-- Cabeceras de la tabla -->
         <th>ID</th>
         <th>Banco origen</th>
         <th>Banco destino</th>
@@ -35,38 +23,46 @@
         <th>Fecha</th>
         <th>Acciones</th>
       </tr>
-    </thead>
-    <tbody>
-      {% for record in records %}
-      <tr>
-        <td>{{ record.id_pacto }}</td>
-        <td>{{ record.banco_origen }}</td>
-        <td>{{ record.banco_destino }}</td>
-        <td>{{ record.monto }}</td>
-        <td>{{ record.cuenta_origen }}</td>
-        <td>{{ record.cuenta_destino }}</td>
-        <td>{{ record.tipo_cambio }}</td>
-        <td>{{ record.comision }}</td>
-        <td>{{ record.status }}</td>
-        <td>{{ record.fecha_hora }}</td>
-        <td>
-          <!-- Select para editar ID del pacto -->
-          <form action="{{ url_for('editar_pactos', record_id=record.id_pacto) }}" method="POST">
-            <div class="form-group">
+      </thead>
+      <tbody>
+        {% for record in records %}
+        <tr>
+          <td>{{ record.id_pacto }}</td>
+          <td>{{ record.banco_origen }}</td>
+          <td>{{ record.banco_destino }}</td>
+          <td>{{ record.monto }}</td>
+          <td>{{ record.cuenta_origen }}</td>
+          <td>{{ record.cuenta_destino }}</td>
+          <td>{{ record.tipo_cambio }}</td>
+          <td>{{ record.comision }}</td>
+          <td>{{ record.status }}</td>
+          <td>{{ record.fecha_hora }}</td>
+          <td>
+            <form action="{{ url_for('editar_pactos', record_id=record.id_pacto) }}" method="POST" onsubmit="return showAlert();">
+              <div class="form-group">
                 <label for="status-{{ record.id_pacto }}">Seleccionar nuevo estado del Pacto:</label>
                 <select class="form-control" id="statusSelect-{{ record.id_pacto }}" name="status" required>
-                    <option value="">Seleccionar Status</option>
-                    <option value="EN PROGRESO" {% if record.status == 'EN PROCESO' and not (status is not none) %}selected{% endif %}>EN PROGRESO</option>
-                    <option value="RECHAZADO" {% if record.status == 'RECHAZADO' and not (status is not none) %}selected{% endif %}>RECHAZADO</option>
-                    <option value="PAGADO" {% if record.status == 'PAGADO' and not (status is not none) %}selected{% endif %}>PAGADO</option>
+                  <option value="">Seleccionar Status</option>
+                  <option value="EN PROCESO" {% if record.status == 'EN PROCESO' %}selected{% endif %}>EN PROGRESO</option>
+                  <option value="RECHAZADO" {% if record.status == 'RECHAZADO' %}selected{% endif %}>RECHAZADO</option>
+                  <option value="PAGADO" {% if record.status == 'PAGADO' %}selected{% endif %}>PAGADO</option>
                 </select>
-            </div>
-            <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
-        </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+              </div>
+              <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
+
+<script>
+  function showAlert() {
+    alert("Estado cambiado exitosamente");
+    return true; 
+  }
+</script>
+
 {% endblock %}
