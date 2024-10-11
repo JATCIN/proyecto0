@@ -3,58 +3,53 @@
 {% block title %}Listado de Transferencias{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-  <h2 class="text-center mb-4">Listado de Transferencias</h2>
-  
-  <div class="table-responsive">
-    <table class="table table-striped table-hover table-bordered align-middle">
-      <thead class="table-dark text-center">
-        <tr>
-          <th>ID</th>
-          <th>Usuario</th>
-          <th>Email</th>
-          <th>Banco Origen</th>
-          <th>Cuenta Origen</th>
-          <th>Banco Destino</th>
-          <th>Cuenta Destino</th>
-          <th>Monto</th>
-          <th>Tipo de Cambio</th>
-          <th>Comisión</th>
-          <th>Fecha</th>
-          <th>ID Pacto</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
+<div class="container">
+  <h2 class="mt-4">listado de Transferencias</h2>
+  <table class="table table-bordered" style="transform: translateX(-170px);">
+    <thead>
+      <tr>
+        <th>ID transferencia</th>
+        <th>Usuario</th>
+        <th>Email</th>
+        <th>Banco origen</th>
+        <th>Cuenta origen</th>
+        <th>Banco destino</th>
+        <th>Cuenta destino</th>
+        <th>Monto</th>
+        <th>Tipo de cambio</th>
+        <th>Comisión</th>
+        <th>Fecha</th>
+        <th>ID pacto asignado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
         {% for record in records %}
-        <tr>
-          <td class="text-center">{{ record.id }}</td>
-          <td>{{ record.fullname }}</td>
-          <td>{{ record.email }}</td>
-          <td>{{ record.origin_bank }}</td>
-          <td>{{ record.origin_account }}</td>
-          <td>{{ record.destination_bank }}</td>
-          <td>{{ record.destination_account }}</td>
-          <td>{{ record.amount | round(2) }}</td>
-          <td>{{ record.exchange_rate | round(2) }}</td>
-          <td>{{ record.commission | round(2) }}</td>
-          <td>{{ record.created_at.strftime('%d/%m/%Y') }}</td>
-          <td class="text-center">{{ record.pacto_id }}</td>
-          <td class="text-center">
-            <div class="btn-group">
-            
-              <!-- Formulario para eliminar -->
-              <form action="{{ url_for('delete_transfer', record_id=record.id) }}" method="POST" style="display:inline;">
-                <button type="submit" class="btn btn-danger btn-sm" title="Eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar esta transferencia?');">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </form>
+      <tr>
+        <td>{{ record.id }}</td>
+        <td>{{ record.fullname }}</td>
+        <td>{{ record.email }}</td>
+        <td>{{ record.origin_bank }}</td>
+        <td>{{ record.origin_account }}</td>
+        <td>{{ record.destination_bank }}</td>
+        <td>{{ record.destination_account }}</td>
+        <td>{{ record.amount }}</td>
+        <td>{{ record.exchange_rate }}</td>
+        <td>{{ record.commission }}</td>
+        <td>{{ record.created_at }}</td>
+        <td>{{ record.pacto_id }}</td>
+        <td>
+            <div class="btn-group" role="group" aria-label="Editar y eliminar">
+                <form action="{{ url_for('delete_transfer', record_id=record.id) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta transferencia?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
             </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}
