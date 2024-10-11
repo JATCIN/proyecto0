@@ -272,7 +272,7 @@ def pacto():
             cursor.execute("""
                 INSERT INTO pacto (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, status)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, True))  
+            """, (banco_origen, banco_destino, monto, cuenta_origen, cuenta_destino, tipo_cambio, comision, 'EN PROCESO'))  
             
             conn.commit()  # Confirmar los cambios
             cursor.close()
