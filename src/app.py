@@ -490,7 +490,7 @@ def export_pdf():
             records = cursor.fetchall()  # Guardamos las transferencias en 'records'
 
             # Crear un PDF con los resultados
-            pdf = FPDF()
+            pdf = FPDF(orientation='P', unit='mm', format='A4')  # Orientación vertical
             pdf.add_page()
 
             # Configurar el título y encabezado
