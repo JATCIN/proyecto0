@@ -222,9 +222,15 @@ def delete_casa_de_bolsa(record_id):
 def list_users():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute("""
-    SELECT users.*, transferencias.id AS transferencia_id
-    FROM users
-    LEFT JOIN transferencias ON users.id = transferencias.user_id
+    SELECT 
+            users.*, 
+            STRING_AGG(transferencias.id::TEXT, ',') AS transferencia_ids
+            FROM 
+            users
+            LEFT JOIN 
+            transferencias ON users.id = transferencias.user_id
+            GROUP BY 
+            users.id
     """)
     records = cursor.fetchall()
     return render_template('list_users.html', records=records)
@@ -626,9 +632,15 @@ def export_pdf_usuarios():
 
         try:
             cursor.execute("""
-                SELECT users.*, transferencias.id AS transferencia_id
-                FROM users
-                LEFT JOIN transferencias ON users.id = transferencias.user_id
+            SELECT 
+            users.*, 
+            STRING_AGG(transferencias.id::TEXT, ',') AS transferencia_ids
+            FROM 
+            users
+            LEFT JOIN 
+            transferencias ON users.id = transferencias.user_id
+            GROUP BY 
+            users.id
             """)
             records = cursor.fetchall()  # Guardamos las transferencias en 'records'
 
