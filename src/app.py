@@ -284,7 +284,7 @@ def pacto():
 @app.route('/list_pactos')
 def list_pactos():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT * FROM pacto')
+    cursor.execute('SELECT * FROM pacto ORDER BY fecha_hora ASC;')
     records = cursor.fetchall()
     return render_template('list_pactos.html', records=records)
     
