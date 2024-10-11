@@ -670,7 +670,7 @@ def export_pdf_usuarios():
                 pdf.cell(28, 10, row['email'], 1)
                 pdf.cell(28, 10, str(row['username']), 1)
                 pdf.cell(28, 10, row['created_at'].strftime("%Y-%m-%d"), 1)
-                pdf.cell(28, 10, str(row['transferencia_id']), 1)
+                pdf.cell(28, 10, str(row['transferencia_ids']), 1)
                 
                 pdf.ln()
 

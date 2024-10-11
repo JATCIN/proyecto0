@@ -27,7 +27,7 @@
         <td>{{ record.email }}</td>
         <td>{{ record.username }}</td>
         <td>{{ record.created_at }}</td>
-        <td>{{ record.transferencia_id}}</td>
+        <td>{{ record.transferencia_ids}}</td>
         <td>
             <div class="btn-group" role="group" aria-label="Editar y eliminar">
                 <form action="{{ url_for('delete_users', record_id=record.id) }}" method="POST" style="display:inline;">
