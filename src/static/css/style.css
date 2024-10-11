@@ -122,4 +122,14 @@ body {
   .site-header a { 
   color:#fff;
   }
-  
+  .sidebar {
+   position: sticky; /* Hace que el elemento permanezca en su lugar cuando se desplaza */
+   top: 0; /* Establece la posición superior cuando el usuario se desplaza */
+   height: 100vh; /* Asegúrate de que el sidebar tenga la altura completa de la ventana */
+   overflow-y: auto; /* Permite el desplazamiento vertical si el contenido es más grande que el área visible */
+}
+
+.sidebar-sticky {
+   position: sticky;
+   top: 0;
+}

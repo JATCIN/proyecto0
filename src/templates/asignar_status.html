@@ -38,7 +38,7 @@
           <td>
             <form action="{{ url_for('editar_pactos', record_id=record.id_pacto) }}" method="POST" onsubmit="return showAlert();">
               <div class="form-group">
-                <label for="status-{{ record.id_pacto }}">Seleccionar nuevo estado del Pacto:</label>
+                <label for="status-{{ record.id_pacto }}">Seleccionar nuevo status:</label>
                 <select class="form-control" id="statusSelect-{{ record.id_pacto }}" name="status" required>
                   <option value="">Seleccionar Status</option>
                   <option value="EN PROCESO" {% if record.status == 'EN PROCESO' %}selected{% endif %}>EN PROCESO</option>
