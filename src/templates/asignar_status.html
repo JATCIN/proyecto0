@@ -40,7 +40,7 @@
         <td>{{ record.fecha_hora }}</td>
         <td>
           <!-- Select para editar ID del pacto -->
-          <form action="{{ url_for('editar_pactos', record_id=record.id) }}" method="POST">
+          <form action="{{ url_for('editar_pactos', record_id=record.id_pacto) }}" method="POST">
             <div class="form-group">
               <label for="status-{{ record.id_pacto }}">Seleccionar nuevo estado del Pacto:</label>
               <select class="form-control" id="statusSelect-{{ record.id_pacto }}" name="status" required>
