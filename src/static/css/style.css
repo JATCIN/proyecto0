@@ -128,7 +128,7 @@ body {
    left: 0; /* Fija la parte izquierda */
    width: 250px; /* Ancho del sidebar */
    height: 100vh; /* Altura completa de la ventana */
-   overflow-y: auto; /* Permite el desplazamiento si es necesario */
+   overflow-y: none; /* Permite el desplazamiento si es necesario */
    background-color: #f8f9fa; /* Color de fondo */
    z-index: 1000; /* Asegura que esté en la parte superior de otros elementos */
 }
