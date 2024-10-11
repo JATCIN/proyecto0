@@ -495,17 +495,22 @@ def export_pdf():
 
             # Configurar el título y encabezado
             pdf.set_font('Arial', 'B', 16)
-            pdf.cell(200, 10, txt="Listado de Transferencias", ln=True, align='C')
+            pdf.cell(200, 10, txt="Reporte Transferencias", ln=True, align='C')
 
             # Agregar una tabla con los datos
             pdf.set_font('Arial', 'B', 10)
-            pdf.cell(20, 10, "ID", 1)
+            pdf.cell(20, 10, "ID Transferencia", 1)
             pdf.cell(30, 10, "Usuario", 1)
             pdf.cell(40, 10, "Email", 1)
             pdf.cell(30, 10, "Banco Origen", 1)
+            pdf.cell(30, 10, "Cuenta Origen", 1)
             pdf.cell(30, 10, "Banco Destino", 1)
+            pdf.cell(30, 10, "Cuenta Destino", 1)
             pdf.cell(20, 10, "Monto", 1)
+            pdf.cell(30, 10, "Tipo de cambio", 1)
+            pdf.cell(30, 10, "Comision", 1)
             pdf.cell(30, 10, "Fecha", 1)
+            pdf.cell(30, 10, "Id pacto asignado", 1)
             pdf.ln()
 
             # Agregar datos al PDF
@@ -515,9 +520,14 @@ def export_pdf():
                 pdf.cell(30, 10, row['fullname'], 1)
                 pdf.cell(40, 10, row['email'], 1)
                 pdf.cell(30, 10, row['origin_bank'], 1)
+                pdf.cell(30, 10, row['origin_account'], 1)
                 pdf.cell(30, 10, row['destination_bank'], 1)
+                pdf.cell(30, 10, row['destination_account'], 1)
                 pdf.cell(20, 10, str(row['amount']), 1)
+                pdf.cell(20, 10, str(row['exchange_rate']), 1)
+                pdf.cell(20, 10, str(row['commission']), 1)
                 pdf.cell(30, 10, row['created_at'].strftime("%Y-%m-%d"), 1)
+                pdf.cell(20, 10, str(row['pacto_id']), 1)
                 pdf.ln()
 
             # Guardar el PDF en un archivo temporal
