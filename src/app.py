@@ -474,7 +474,7 @@ def editar_transferencia(record_id):
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para asignar un pacto')
     
-
+     #PDF PARA TRANSFERENCIAS 
 @app.route('/export-pdf', methods=['GET'])
 def export_pdf():
     # Verificamos si el usuario ha iniciado sesión
@@ -545,6 +545,73 @@ def export_pdf():
             cursor.close()  # Cerrar el cursor
     else:
         return jsonify(status='error', message='Por favor, inicia sesión para exportar las transferencias')
+    
+    #PDF PARA PACTOS 
+@app.route('/export_pdf_pactos', methods=['GET'])
+def export_pdf_pactos():
+    # Verificamos si el usuario ha iniciado sesión
+    if 'loggedin' in session:
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+        try:
+            cursor.execute("""
+                SELECT * FROM pacto ORDER BY fecha_hora ASC
+            """)
+            records = cursor.fetchall()  # Guardamos las transferencias en 'records'
+
+            # Crear un PDF con los resultados en orientación horizontal
+            pdf = FPDF(orientation='L', unit='mm', format='A4')  # Cambiar a 'L' para horizontal
+            pdf.add_page()
+
+            # Configurar el título y encabezado
+            pdf.set_font('Arial', 'B', 16)
+            pdf.cell(285, 10, txt="Reporte Pactos", ln=True, align='C')
+
+            # Agregar una tabla con los datos
+            pdf.set_font('Arial', 'B', 7)
+            pdf.cell(22, 10, "ID Pacto", 1)
+            pdf.cell(22, 10, "Banco Origen", 1)
+            pdf.cell(22, 10, "Banco Destino", 1)
+            pdf.cell(22, 10, "Monto", 1)
+            pdf.cell(22, 10, "Cuenta Origen", 1) 
+            pdf.cell(22, 10, "Cuenta Destino", 1) 
+            pdf.cell(22, 10, "Tipo de cambio", 1)
+            pdf.cell(22, 10, "Comision", 1)
+            pdf.cell(22, 10, "Status", 1)
+            pdf.cell(22, 10, "Fecha", 1)
+            pdf.ln()
+
+            # Agregar datos al PDF
+            pdf.set_font('Arial', '', 7)
+            for row in records:
+                pdf.cell(22, 10, str(row['id_pacto']), 1)
+                pdf.cell(22, 10, row['banco_origen'], 1)
+                pdf.cell(22, 10, row['banco_destino'], 1)
+                pdf.cell(22, 10, str(row['monto']), 1)
+                pdf.cell(22, 10, row['cuenta_origen'], 1)
+                pdf.cell(22, 10, row['cuenta_destino'], 1)
+                pdf.cell(22, 10, str(row['tipo_cambio']), 1)
+                pdf.cell(22, 10, str(row['comision']), 1)
+                pdf.cell(22, 10, str(row['status']), 1)
+                pdf.cell(22, 10, row['fecha_hora'].strftime("%Y-%m-%d"), 1)
+                
+                pdf.ln()
+
+            # Guardar el PDF en un archivo temporal
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+                pdf.output(temp_file.name)
+                temp_file.seek(0)
+                temp_file_name = temp_file.name
+
+            return send_file(temp_file_name, as_attachment=True, download_name='Pactos.pdf', mimetype='application/pdf')
+        
+        except Exception as e:
+            return jsonify(status='error', message=str(e))
+        
+        finally:
+            cursor.close()  # Cerrar el cursor
+    else:
+        return jsonify(status='error', message='Por favor, inicia sesión para exportar los pactos')
     
 
    
