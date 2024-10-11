@@ -40,16 +40,14 @@
         <td>{{ record.fecha_hora }}</td>
         <td>
           <!-- Select para editar ID del pacto -->
-          <form action="{{ url_for('editar_transferencia', record_id=record.id) }}" method="POST">
+          <form action="{{ url_for('editar_pactos', record_id=record.id) }}" method="POST">
             <div class="form-group">
-              <label for="pacto_id-{{ record.id }}">Seleccionar nuevo ID del Pacto:</label>
-              <select class="form-control" id="pactoSelect-{{ record.id }}" name="pacto_id" required>
-                <option value="">Seleccionar Pacto</option>
-                {% for pacto in pactos %}  <!-- Itera sobre los pactos, no sobre records -->
-                  <option value="{{ pacto.id_pacto }}" {% if pacto.id_pacto == record.pacto_id %}selected{% endif %}>
-                    {{ pacto.id_pacto }}  <!-- Aquí se muestra el ID del pacto -->
-                  </option>
-                {% endfor %}
+              <label for="status-{{ record.id_pacto }}">Seleccionar nuevo estado del Pacto:</label>
+              <select class="form-control" id="statusSelect-{{ record.id_pacto }}" name="status" required>
+                <option value="">Seleccionar Status</option>
+                <option value="EN PROGRESO" {% if record.status == 'EN PROGRESO' %}selected{% endif %}>EN PROGRESO</option>
+                <option value="RECHAZADO" {% if record.status == 'RECHAZADO' %}selected{% endif %}>RECHAZADO</option>
+                <option value="PAGADO" {% if record.status == 'PAGADO' %}selected{% endif %}>PAGADO</option>
               </select>
             </div>
             <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
