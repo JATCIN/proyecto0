@@ -422,7 +422,13 @@ def asignar_pactos():
             """)           
             records = cursor.fetchall()  # Obtener todos los registros
 
-            cursor.execute('SELECT * FROM pacto;')  # Consulta para obtener los pactos
+            cursor.execute("""
+            SELECT p.* 
+            FROM pacto p
+            LEFT JOIN transferencias t ON p.id_pacto = t.pacto_id
+            WHERE t.pacto_id IS NULL
+            ORDER BY p.fecha_hora ASC;
+            """)  # Consulta para obtener los pactos
             pactos = cursor.fetchall()
             
             return render_template('asignar_pactos.html', records=records, pactos=pactos)
