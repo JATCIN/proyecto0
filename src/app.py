@@ -514,20 +514,20 @@ def export_pdf():
             pdf.ln()
 
             # Agregar datos al PDF
-            pdf.set_font('Arial', '', 5)
+            pdf.set_font('Arial', '', 7)
             for row in records:
-                pdf.cell(20, 10, str(row['id']), 1)
-                pdf.cell(30, 10, row['fullname'], 1)
-                pdf.cell(40, 10, row['email'], 1)
-                pdf.cell(30, 10, row['origin_bank'], 1)
-                pdf.cell(30, 10, row['origin_account'], 1)
-                pdf.cell(30, 10, row['destination_bank'], 1)
-                pdf.cell(30, 10, row['destination_account'], 1)
-                pdf.cell(20, 10, str(row['amount']), 1)
-                pdf.cell(20, 10, str(row['exchange_rate']), 1)
-                pdf.cell(20, 10, str(row['commission']), 1)
-                pdf.cell(30, 10, row['created_at'].strftime("%Y-%m-%d"), 1)
-                pdf.cell(20, 10, str(row['pacto_id']), 1)
+                pdf.cell(22, 10, str(row['id']), 1)
+                pdf.cell(22, 10, row['fullname'], 1)
+                pdf.cell(32, 10, row['email'], 1)
+                pdf.cell(22, 10, row['origin_bank'], 1)
+                pdf.cell(22, 10, row['origin_account'], 1)
+                pdf.cell(22, 10, row['destination_bank'], 1)
+                pdf.cell(22, 10, row['destination_account'], 1)
+                pdf.cell(22, 10, str(row['amount']), 1)
+                pdf.cell(22, 10, str(row['exchange_rate']), 1)
+                pdf.cell(22, 10, str(row['commission']), 1)
+                pdf.cell(22, 10, row['created_at'].strftime("%Y-%m-%d"), 1)
+                pdf.cell(22, 10, str(row['pacto_id']), 1)
                 pdf.ln()
 
             # Guardar el PDF en un archivo temporal
