@@ -134,3 +134,20 @@ span.input-group-addon i {
 .container-fluid {
    margin-top: 56px; /* Ajusta según la altura de tu barra de navegación */
 }
+.submenu {
+   display: none; /* Ocultar submenús por defecto */
+   padding-left: 15px; /* Indentar submenús */
+ }
+ 
+ .nav-item:hover .submenu {
+   display: block; /* Mostrar submenús al pasar el ratón */
+ }
+ 
+ /* Estilos para la clase "collapse" para mostrar el submenú */
+ .collapse {
+   display: none; /* Asegúrate de que los submenús colapsados estén ocultos */
+ }
+ 
+ .collapse.show {
+   display: block; /* Mostrar el submenú si tiene la clase "show" */
+ }

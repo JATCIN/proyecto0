@@ -32,63 +32,53 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('list_casa_de_bolsa') }}">
-                    <i class="fas fa-shopping-bag"></i>
-                    Casa de bolsa
+                  <i class="fas fa-shopping-bag"></i>
+                  Casa de bolsa
                 </a>
-                <ul class="submenu">
-                    <li><a href="{{ url_for('new_casa_de_bolsa') }}">Nueva Casa de Bolsa</a></li>
+                <ul class="submenu collapse">
+                  <li><a href="{{ url_for('new_casa_de_bolsa') }}">Nueva Casa de Bolsa</a></li>
                 </ul>
-            </li>
+              </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" data-toggle="collapse" href="#transferenciasSubmenu" role="button" aria-expanded="false" aria-controls="transferenciasSubmenu">
                   <i class="fas fa-arrow-right"></i>
                   Transferencias
                 </a>
-                <ul class="submenu">
+                <ul class="submenu collapse" id="transferenciasSubmenu">
                   <li><a href="{{ url_for('new_transfer1') }}">Crear Transferencias</a></li>
-              </ul>
-              <ul class="submenu">
-                <li><a href="{{ url_for('asignar_pactos') }}">Asignar pacto a transferencias</a></li>
-            </ul>
+                  <li><a href="{{ url_for('asignar_pactos') }}">Asignar pacto a transferencias</a></li>
+                </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" data-toggle="collapse" href="#pactosSubmenu" role="button" aria-expanded="false" aria-controls="pactosSubmenu">
                   <i class="fas fa-users"></i>
                   Pactos
                 </a>
-                <ul class="submenu">
-                  <li><a href="{{ url_for('new_pact') }}">Crear pacto </a></li>
-              </ul>
-              <ul class="submenu">
-                <li><a href="{{ url_for('asignar_status') }}">Cambiar status de pacto </a></li>
-            </ul>
+                <ul class="submenu collapse" id="pactosSubmenu">
+                  <li><a href="{{ url_for('new_pact') }}">Crear pacto</a></li>
+                  <li><a href="{{ url_for('asignar_status') }}">Cambiar status de pacto</a></li>
+                </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" data-toggle="collapse" href="#reportesSubmenu" role="button" aria-expanded="false" aria-controls="reportesSubmenu">
                   <i class="fas fa-download"></i>
                   Reportes
                 </a>
-                <ul class="submenu">
-                  <li><a href="{{ url_for('list_transferencias') }}">Listar transferencias </a></li>
-              </ul>
-            <ul class="submenu">
-              <li><a href="{{ url_for('list_pactos') }}">Listar pactos </a></li>
-          </ul>
-          <ul class="submenu">
-            <li><a href="{{ url_for('list_users') }}">Listar clientes </a></li>
-        </ul>
+                <ul class="submenu collapse" id="reportesSubmenu">
+                  <li><a href="{{ url_for('list_transferencias') }}">Listar transferencias</a></li>
+                  <li><a href="{{ url_for('list_pactos') }}">Listar pactos</a></li>
+                  <li><a href="{{ url_for('list_users') }}">Listar clientes</a></li>
+                </ul>
               </li>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('list_banco') }}">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('list_banco') }}">
                   <i class="fa fa-university"></i>
                   Bancos
-              </a>
-              <ul class="submenu">
+                </a>
+                <ul class="submenu collapse">
                   <li><a href="{{ url_for('new_banco') }}">Nuevo banco</a></li>
-              </ul>
-
-          </li>
+                </ul>
+              </li>
             </ul>
    </div>
         </nav>
