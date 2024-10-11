@@ -495,7 +495,7 @@ def export_pdf():
 
             # Configurar el título y encabezado
             pdf.set_font('Arial', 'B', 16)
-            pdf.cell(300, 10, txt="Reporte Transferencias", ln=True, align='C')
+            pdf.cell(250, 10, txt="Reporte Transferencias", ln=True, align='C')
 
             # Agregar una tabla con los datos
             pdf.set_font('Arial', 'B', 7)
