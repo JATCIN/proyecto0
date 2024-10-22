@@ -1,126 +1,93 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <style>
-        .transition {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.9); /* Color blanco con un poco de opacidad */
-            z-index: 999; /* Asegúrate de que esté por encima del contenido */
-            opacity: 0;
-            transform: scale(1.1);
-            transition: opacity 0.5s ease, transform 0.5s ease; /* Animación de desvanecimiento */
-        }
-
-        .transition.active {
-            opacity: 1;
-            transform: scale(1); /* Escala normal cuando está activa */
-        }
-    </style>
-</head>
-<body class="loggedin">
-    <nav class="site-header sticky-top py-1">
-        <div class="container d-flex flex-column flex-md-row justify-content-between">
-            <a class="py-2 d-none d-md-inline-block" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Inicio</a>
-            <a class="py-2 d-none d-md-inline-block" href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i> Perfil</a>
-            <a class="py-2 d-none d-md-inline-block" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Cerrar sesion</a>
-        </div>
+ <head>
+  <meta charset="utf-8">
+  
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+ <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ </head>
+ <body class="loggedin">
+ <nav class="site-header sticky-top py-1">
+      <div class="container d-flex flex-column flex-md-row justify-content-between">
+  <a class="py-2 d-none d-md-inline-block" href="{{ url_for('home') }}"><i class="fas fa-home"></i> Inicio</a>
+  <a class="py-2 d-none d-md-inline-block" href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i> Perfil</a>
+  <a class="py-2 d-none d-md-inline-block" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Cerrar sesion</a>
+   </div>
     </nav>
-
+   
     <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('list_casa_de_bolsa') }}">
-                                <i class="fas fa-shopping-bag"></i>
-                                Casa de bolsa
-                            </a>
-                            <ul class="submenu">
-                                <li><a href="{{ url_for('new_casa_de_bolsa') }}">Nueva Casa de Bolsa</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-arrow-right"></i>
-                                Transferencias
-                            </a>
-                            <ul class="submenu">
-                                <li><a href="{{ url_for('new_transfer1') }}">Crear Transferencias</a></li>
-                                <li><a href="{{ url_for('asignar_pactos') }}">Asignar pacto a transferencias</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-users"></i>
-                                Pactos
-                            </a>
-                            <ul class="submenu">
-                                <li><a href="{{ url_for('new_pact') }}">Crear pacto</a></li>
-                                <li><a href="{{ url_for('asignar_status') }}">Cambiar status de pacto</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-download"></i>
-                                Reportes
-                            </a>
-                            <ul class="submenu">
-                                <li><a href="{{ url_for('list_transferencias') }}">Listar transferencias</a></li>
-                                <li><a href="{{ url_for('list_pactos') }}">Listar pactos</a></li>
-                                <li><a href="{{ url_for('list_users') }}">Listar clientes</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('list_banco') }}">
-                                <i class="fa fa-university"></i>
-                                Bancos
-                            </a>
-                            <ul class="submenu">
-                                <li><a href="{{ url_for('new_banco') }}">Nuevo banco</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+      <div class="row">
+          <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+              <div class="sidebar-sticky">
+                  <ul class="nav flex-column">
+                      <li class="nav-item">
+                          <a class="nav-link" href="{{ url_for('list_casa_de_bolsa') }}">
+                              <i class="fas fa-shopping-bag"></i>
+                              Casa de bolsa
+                          </a>
+                          <ul class="submenu">
+                              <li><a href="{{ url_for('new_casa_de_bolsa') }}">Nueva Casa de Bolsa</a></li>
+                          </ul>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="#">
+                              <i class="fas fa-arrow-right"></i>
+                              Transferencias
+                          </a>
+                          <ul class="submenu">
+                              <li><a href="{{ url_for('new_transfer1') }}">Crear Transferencias</a></li>
+                              <li><a href="{{ url_for('asignar_pactos') }}">Asignar pacto a transferencias</a></li>
+                          </ul>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="#">
+                              <i class="fas fa-users"></i>
+                              Pactos
+                          </a>
+                          <ul class="submenu">
+                              <li><a href="{{ url_for('new_pact') }}">Crear pacto</a></li>
+                              <li><a href="{{ url_for('asignar_status') }}">Cambiar status de pacto</a></li>
+                          </ul>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="#">
+                              <i class="fas fa-download"></i>
+                              Reportes
+                          </a>
+                          <ul class="submenu">
+                              <li><a href="{{ url_for('list_transferencias') }}">Listar transferencias</a></li>
+                              <li><a href="{{ url_for('list_pactos') }}">Listar pactos</a></li>
+                              <li><a href="{{ url_for('list_users') }}">Listar clientes</a></li>
+                          </ul>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{{ url_for('list_banco') }}">
+                              <i class="fa fa-university"></i>
+                              Bancos
+                          </a>
+                          <ul class="submenu">
+                              <li><a href="{{ url_for('new_banco') }}">Nuevo banco</a></li>
+                          </ul>
 
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                    <div class="col-12">
-                        <div id="page-transition" class="transition"></div>
-                        {% block content %}{% endblock %}
-                    </div>
-                </div>
-            </main>
-        </div>
+          </li>
+            </ul>
+   </div>
+        </nav>
+  
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <div class="col-12">
+   {% block content %}{% endblock %}
+   </div>
+          </div>
+   </main>
+     
+      </div>
     </div>
-
-    <script>
-        $(document).ready(function() {
-            // Captura los clics en los enlaces del menú
-            $('.nav-link').on('click', function(event) {
-                event.preventDefault(); // Previene el comportamiento por defecto del enlace
-
-                // Agrega la clase activa para comenzar la animación
-                $('#page-transition').addClass('active');
-
-                // Espera que la animación termine antes de cambiar de página
-                setTimeout(() => {
-                    window.location.href = $(this).attr('href'); // Cambia a la nueva página
-                }, 500); // Espera 500 ms para que termine la animación
-            });
-        });
-    </script>
-</body>
+   
+ </body>
 </html>
